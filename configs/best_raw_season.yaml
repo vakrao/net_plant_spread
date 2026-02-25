@@ -1,0 +1,20 @@
+### Recreates incidence 
+## for best-fitting seasonal
+## network
+params:
+  model_type: "seasonal-best-fit"
+  b_b: [0.03]
+  b_w: [0.08]
+  alpha: [0.1]
+  deltaT: 3
+  L: [3]
+  T: 425
+  P: [625]
+  prop_fn: "../params/clean_prop_dat.csv"
+  net_file: "../params/yearly_clean_agg.csv"
+  inc_file: "../params/raw_data.csv"
+  save_folder: "../results/best_s/"
+  D: [0.8]
+  run_type: "calib"
+  pool_amount: 50
+  max_infected: 3000

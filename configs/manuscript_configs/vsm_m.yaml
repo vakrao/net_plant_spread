@@ -1,0 +1,21 @@
+### month vary sm
+params:
+  model_type: "monthly_L_vary"
+  b_b: [0.03]
+  b_w: [0.09]
+  alpha: [0.1]
+  deltaT: 1
+  sm: [1,2,3,4,5,6,7,8,9,10,11,12]
+  T: 425
+  P: [625]
+  L: [0]
+  prop_fn: "../params/pub_clean_prop_dat.csv"
+  net_file: "../params/yearly_clean_agg.csv"
+  inc_file: "../params/inc_data/raw_data.csv"
+  save_folder: "V_A/vsm_m/"
+  D: [0.4]
+  run_type: "run"
+  pool_amount: 50
+  max_infected: 3000
+
+

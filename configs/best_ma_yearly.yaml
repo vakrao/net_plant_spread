@@ -1,0 +1,20 @@
+###yearly best vary ma
+params:
+  model_type: "year_ma_best"
+  b_b: [0.02]
+  b_w: [0.1]
+  alpha: [0.1]
+  deltaT: 12
+  T: 425
+  P: [625]
+  L: [3]
+  prop_fn: "../params/pub_clean_prop_dat.csv"
+  net_file: "../params/yearly_clean_agg.csv"
+  inc_file: "../params/ma_data.csv"
+  save_folder: "../results/best_y_ma/"
+  D: [0.4]
+  run_type: "calib"
+  pool_amount: 50
+  max_infected: 3000
+
+

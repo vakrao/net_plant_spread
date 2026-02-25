@@ -1,0 +1,19 @@
+### E2 is for yearly aggregation
+params:
+  model_type: "seasonal_large_plant"
+  b_w: [.001,.01,.1,1]
+  b_b: [.001,.01,.1,1]
+  alpha: [0.1]
+  deltaT: 3
+  L: [3]
+  T: 425
+  P: [625]
+  prop_fn: "../params/pub_clean_prop_dat.csv"
+  net_file: "../params/yearly_clean_agg.csv"
+  inc_file: "../params/inc_data/raw_data.csv"
+  save_folder: ""
+  D: [0.2,0.4,0.6,0.8]
+  pool_amount: 30
+  max_infected: 2300
+  run_type: "calib"
+

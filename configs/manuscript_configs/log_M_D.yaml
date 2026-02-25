@@ -1,0 +1,19 @@
+### E1 is for monthly aggregation
+params:
+  model_type: "monthly_large_plant"
+  b_w: [.0001,.001,.01,.1,1]
+  b_b: [.0001,.001,.01,.1,1]
+  alpha: [0.1]
+  deltaT: 1
+  L: [3]
+  T: 425
+  P: [625]
+  prop_fn: "../params/pub_clean_prop_dat.csv"
+  net_file: "../params/yearly_clean_agg.csv"
+  inc_file: "../params/raw_data.csv"
+  save_folder: ""
+  D: [0.2,0.4,0.6,0.8]
+  pool_amount: 40
+  max_infected: 2300
+  run_type: "calib"
+

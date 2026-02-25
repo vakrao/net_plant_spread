@@ -1,0 +1,2 @@
+- fig_graph_configs.ipynb is used to visualize the lines of best fit using the data from the results/ folder
+- create_ma.ipynb is used to create the 2-month moving average data from the raw-data 

@@ -1,0 +1,18 @@
+### Vary detection threshol D
+params:
+  model_type: "seasonal_D_vary"
+  b_b: [0.03]
+  b_w: [0.08]
+  alpha: [0.1]
+  deltaT: 3
+  L: [3]
+  T: 425
+  P: [625]
+  prop_fn: "../params/pub_clean_prop_dat.csv"
+  net_file: "../params/yearly_clean_agg.csv"
+  inc_file: "../params/inc_data/raw_data.csv"
+  save_folder: "V_A/vd_s/"
+  D: [0.2,0.4,0.6,0.8]
+  run_type: "run"
+  pool_amount: 50
+  max_infected: 3000

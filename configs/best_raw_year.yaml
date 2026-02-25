@@ -1,0 +1,20 @@
+###yearly vary sm
+params:
+  model_type: "yearly_vary"
+  b_b: [0.04]
+  b_w: [0.07]
+  alpha: [0.1]
+  deltaT: 12
+  T: 425
+  P: [625]
+  L: [3]
+  prop_fn: "../params/clean_prop_dat.csv"
+  net_file: "../params/yearly_clean_agg.csv"
+  inc_file: "../params/raw_data.csv"
+  save_folder: "../results/best_y/"
+  D: [0.8]
+  run_type: "calib"
+  pool_amount: 50
+  max_infected: 3000
+
+
