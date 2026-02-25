@@ -1,0 +1,15 @@
+[project]
+name = "nz-model"
+version = "0.1.0"
+description = "Packages required to run SI-model"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "geopy>=2.4.1",
+    "polars>=1.30.0",
+    "pyyaml>=6.0.2",
+    "scikit-learn>=1.6.1",
+    "scipy>=1.15.2",
+    "seaborn>=0.13.2",
+    "yamal>=8.0.21",
+]
