@@ -2,6 +2,7 @@ import networkx as nx
 from mod_si import *
 import random
 import pandas as pd
+
 def find_conn_comp_calib_seeds(fp,seed_amount,in_data,out_data,save_fn=""):
     random.seed()
     id_to_index = {}
@@ -45,7 +46,6 @@ def find_conn_comp_calib_seeds(fp,seed_amount,in_data,out_data,save_fn=""):
         x = mod_in_data[d]
         for s in x:
             weight_val = mod_in_data[d][s]
-#            G.add_edge(s,d,weight=weight_val))
     for s in mod_out_data:
         x = mod_out_data[s]
         for d in x:
@@ -59,23 +59,21 @@ def find_conn_comp_calib_seeds(fp,seed_amount,in_data,out_data,save_fn=""):
         comp_amount += 1
     largest = (max(nx.strongly_connected_components(G), key=len))
     id_largest = [x for x in largest]
-    all_ids = [str(index_to_id[i]) for i in id_largest]
-    prop_regions = read_property_data_regions("../params/2024_prop_dat.csv")
+    all_ids = [(((index_to_id[i]))) for i in id_largest]
+    prop_regions = read_property_data_regions(fp)
     proper_ids = []
     # now, match to region 2
     within_region = 0
     for p in all_ids:
         if p in prop_regions:
             r_id = prop_regions[p]
-            if r_id == 2 and p in in_data and p in out_data:
+            if r_id == 1 and p in in_data and p in out_data:
                 within_region += 1
                 proper_ids.append(p)
     if seed_amount > len(proper_ids):
         seed_amount = len(proper_ids)
     seed_ids = random.sample(proper_ids,seed_amount)
     print("number within region: ",len(proper_ids))
-    #print("total id amount of all nodes: ",len(all_ids))
-    ## now, save these seed_ids to a filepath
     seed_dict = {'seed_ids':seed_ids}
     write_df = pd.DataFrame.from_dict(seed_dict)
     write_df.to_csv(save_fn)
@@ -91,12 +89,11 @@ def read_property_data_regions (filename):
         first_row = 0
         for row in rows:
             if first_row > 0:
-                #print (row[0], row[3])
-                i = row[0]
+                i = row[1]
                 r_id = -10
                 s = 1.0
-                if len(row[6])>0:
-                    r_id = int(row[6])
+                if len(row[3])>0:
+                    r_id = int(float(row[3]))
                 
                 prop_size[i] = r_id
             first_row = 1

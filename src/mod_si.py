@@ -16,8 +16,8 @@ def read_network_data (filename):
         first_row = 0
         for row in rows:
             if first_row > 0:
-                s = (row[1])
-                d = (row[2])
+                s = str(row[1])
+                d = str(row[2])
                 w = row[3]
                 if s == '0':
                     print("zero source value")
@@ -48,9 +48,9 @@ def read_property_data (filename):
         first_row = 0
         for row in rows:
             if first_row > 0:
-                i = (row[0])
+                i = str(row[1])
                 s = (1.0)
-                if len(row[3])>0:
+                if (float(row[3]))>0:
                     s = float(row[3])
                 prop_size[i] = float(s)
             first_row = 1
@@ -59,16 +59,10 @@ def read_property_data (filename):
 
 
 
-########
-
-### tau = 365 
-### (each week to give some number of infections) 
-### 
-
 
 """
    Find time increment dt for each node n
-    PARAMTERS
+    PARAMETERS
     min_value: float of minimum time increment
     state: dictionary of level of infections of nodes N
     in_bond: dictionary of dictionaries
@@ -91,13 +85,9 @@ def determine_time_increment (min_value,state, in_bond, beta_bet, beta_wit,tau=3
                     min_inc = frac
     return min_inc
 
-
-#####
-
-
 """
    Find new level of infection I_n for each node n 
-   PARAMTERS
+   PARAMETERS
     old_state: dictionary of level of infections of nodes N
     in_bond: dictionary of dictionaries
         key: String node id n
@@ -141,7 +131,6 @@ def compute_variation (old_state, in_bond,prop_size, beta_bet, beta_wit, dt,F,ta
 
 
 def compute_infected_hectares (state, prop_size, D):
-
     infected_hectares = 0.0
     infected_farms = 0
     for n in state:
@@ -187,21 +176,15 @@ def run_si_model (in_bond, out_bond,net_file, prop_size, b_b, b_w, D, seeds, T, 
 
     # choose network based on tau setting
     if deltaT == 1:
-        if net_file == "horticulture365.csv":
-            folder = "../params/month_tau/"
-        else:
-            folder = "../params/new_month_tau/"
+        folder = "../params/clean_month_agg/"
         if curr_month < 10:
             tau_string = "0"+str(curr_month)
         else: 
             tau_string = str(curr_month)
     if deltaT == 3:
-        if net_file == "horticulture365.csv":
-            folder = "../params/season_tau/"
-        else:
-            folder = "../params/new_season_tau/"
-
+        folder = "../params/clean_season_agg/"
         tau_string = season[curr_month]
+
     if deltaT == 12:
         folder = "../params/"
         tau_string = net_file
@@ -247,7 +230,7 @@ def run_si_model (in_bond, out_bond,net_file, prop_size, b_b, b_w, D, seeds, T, 
             if curr_month < 10:
                 test_month = "0"+str(init_month)
             assert(tau_string == str(test_month))
-            
+           
     while (t) < T and infected_farms < max_infected:
         old_state = copy.deepcopy(state)
         dt = determine_time_increment (min_value,old_state, in_bond, b_b, b_w,tau)
