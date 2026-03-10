@@ -1,14 +1,11 @@
 The folders are organized as follows:
-- clean_month_agg: contains number of movements between source, destination pairs aggregated by month. Contains 12 files, where each pertains to a unique month 
-- clean_month_raw: contains source,destination pairs belonging to each month. does not include weights; only details source and destination
-- clean_season_agg: contains number of movements between source, destination pairs aggregated by season. Contains 4 files, corresponding to each season
-- clean_season_raw:  contains source,destination pairs belonging to each season. does not include weights; only details source and destination and corresponding month of occurence
-- inc_dat: contains the files for the two infection datasets: raw_data.csv and ma_data.csv
+- **clean_month_agg**: contains 12 files, where each pertains to a unique month. Each file shows the number of movements between source-destination pairs occurring in that unique month.
+- **clean_season_agg**: contains 4 files, where each pertains to each season. Each file shows the number of movements between source-destination pairs occurring in that season.
+- **incidence_data**: contains the two files with the infection incidence data: raw_data.csv and ma_data.csv, where "ma" stands for moving average and "raw" stands for the extracted interpolated incidence data from XXXX{hhtps://XXX}.
 
 The individual files are detailed as follows:
-  - yearly_clean_agg.csv: contains movements of source, destination pairs aggregated by year
-  - yearly_clean_raw.csv: contains source,desintation pairs that occur every year, separeated by month and year
-  - pub_clean_prop_dat.csv: property-id dataset, cotnains property-id values, hectare size, and whether the property is used for calibration or not
+  - **raw_individual_data.csv**: contains individual movements, where the source property id and the destination property id are provided for each movement, as well as the year, season, and month when it occurred
+  - **pub_clean_prop_dat.csv**: this dataset contains property ids, hectare size of each property, and binary values to denote whether the property is used in calibration
 
 
 
