@@ -27,15 +27,15 @@ Clone the repository using the following command:
 
 ### Folder Structure ### 
 ----------------
-configs -> contains all .yaml files needed to run model
+configs/ --> contains all .yaml files needed to run model
 
-notebook -> contains example jupyter notebooks used to visualize lines of best fit
+notebook/ --> contains example jupyter notebooks used to visualize lines of best fit
 
-params- -> contains mobility network datasets generated from OnSide mobility data, as well as incidence datasets
+params/ --> contains mobility network datasets generated from OnSide mobility data, as well as incidence datasets
 
-results -> cotains .csv files generated from E_runner script. Data from these files are used for visualizations and results. This folder only contains data for best-fitting configurations
+results/ --> cotains .csv files generated from E_runner script. Data from these files are used for visualizations and results. This folder only contains data for best-fitting configurations
 
-src -> contains the code for model as well as helper functions used in the notebook directory
+src/ --> contains the code for model as well as helper functions used in the notebook directory
 
 ### Usage ###
 --------------
