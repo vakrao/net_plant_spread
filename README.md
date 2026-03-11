@@ -25,6 +25,14 @@ Clone the repository using the following command:
   source nz_env/bin/activate
  ```
 
+### Folder Structure ### 
+----------------
+configs -> all .yaml files needed to run model are in this folder
+notebook -> contains example jupyter notebooks used to visualize lines of best fit
+params- -> contains mobility network datasets and incidence datasets
+results -> cotains generated .csv files used for visualizations and results. currently only contains data for best-fitting configurations
+src -> all code used to create model and generate results are in in this folder
+
 ### Usage ###
 --------------
 
