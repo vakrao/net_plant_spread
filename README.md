@@ -27,11 +27,15 @@ Clone the repository using the following command:
 
 ### Folder Structure ### 
 ----------------
-configs -> all .yaml files needed to run model are in this folder
+configs -> contains all .yaml files needed to run model
+
 notebook -> contains example jupyter notebooks used to visualize lines of best fit
-params- -> contains mobility network datasets and incidence datasets
-results -> cotains generated .csv files used for visualizations and results. currently only contains data for best-fitting configurations
-src -> all code used to create model and generate results are in in this folder
+
+params- -> contains mobility network datasets generated from OnSide mobility data, as well as incidence datasets
+
+results -> cotains .csv files generated from E_runner script. Data from these files are used for visualizations and results. This folder only contains data for best-fitting configurations
+
+src -> contains the code for model as well as helper functions used in the notebook directory
 
 ### Usage ###
 --------------
@@ -123,11 +127,6 @@ The function `run_si_model` runs the mean-field approximation of our S-I model u
 
 **Output**
 - .csv written to folder defined in configuration file using variable ``save_folder``
-
-
-### Data Description ###
---------------
-Mobility data from the biosecurity company is used in our metapopulation model. To access that data please follow this link to the data repository. Our model assumes that data will be organized in one of three ways: monthly, seasonal, or yearly, depending on the aggregation used. To achieve the results similar to the paper, use the data in the params files and the the notebooks in the notebook/manuscript_notebooks folder. For more information on how we filtered the data, either refer to the linked paper or the README in the data repository. 
 
 
 
