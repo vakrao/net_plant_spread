@@ -27,15 +27,15 @@ Clone the repository using the following command:
 
 ### Folder Structure ### 
 ----------------
-configs/ &rarr;  contains all experimental configuration files 
+**configs/** &rarr;  contains all experimental configuration files 
 
-notebook/ &rarr; contains example jupyter notebooks used to visualize lines of best fit
+**notebook/** &rarr; contains example jupyter notebooks used to visualize lines of best fit
 
-params/ &rarr;   contains mobility network datasets generated from OnSide movement data. Folder also contains incidence datasets. 
+**params/** &rarr;   contains mobility network datasets generated from OnSide movement data. Folder also contains incidence datasets. 
 
-results/ &rarr;  contains .csv files generated from E_runner script. This folder only contains the monthly results of the best-fitting configurations for the raw data and moving average infection data. 
+**results/** &rarr;  contains .csv files generated from E_runner script. This folder only contains the monthly results of the best-fitting configurations for the raw data and moving average infection data. 
 
-src/ &rarr;      contains the code used for the metatpopulation model and dynamics. Also includes helper functions used in the visualizations
+**src/** &rarr;      contains the code used for the metatpopulation model and dynamics. Also includes helper functions used in the visualizations
 
 ### Usage ###
 --------------
