@@ -18,9 +18,9 @@ Clone the repository using the following command:
  ```bash
  uv build
  ```
- After running the build, the nz_env folder containing the virtual environment should be present. To run the code, we must activate the virtual environment.
+ After running the build, the nz_env folder containing the virtual environment should be present. All relevant packages are listed in the ``pyproject.toml`` file.  
 
- To activate the virtual environment:
+ To run the code, we must activate the virtual environment using the follow command:
  ```bash
   source nz_env/bin/activate
  ```
@@ -29,15 +29,11 @@ Clone the repository using the following command:
 ----------------
 **configs/** &rarr;  contains all experimental configuration files 
 
-**notebook/** &rarr; contains example jupyter notebooks used to visualize lines of best fit
-
-**params/** &rarr;   contains mobility network datasets generated from OnSide movement data. Folder also contains incidence datasets. 
+**data/** &rarr;   contains mobility network datasets generated from OnSide movement data. Folder also contains incidence datasets. 
 
 **results/** &rarr;  contains .csv files generated from E_runner script. This folder only contains the monthly results of the best-fitting configurations for the raw data and moving average infection data. 
 
-**src/** &rarr;      contains the code used for the metatpopulation model and dynamics. Also includes helper functions used in the visualizations
-
-**scripts/** &rarr;   contains the code used to generate the files used in the clean_season_agg and clean_month_agg folders
+**src/** &rarr;      contains the code used for the metatpopulation model and dynamics. Also includes helper functions used in the visualizations 
 
 ### Usage ###
 --------------
