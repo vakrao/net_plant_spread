@@ -1,4 +1,5 @@
 **Directory Description**
+--------------
 Here, we list two different notebooks. The first notebook, fig_graph_configs, graphs the values observed in the results/ folder from the different best-fitting parameter values for the raw data and moving average (MA) datasets. 
 
 The other  notebook, create_ma, generates the Moving Average data based on the extracted raw data. 
