@@ -50,10 +50,11 @@ To recreate the results generated in the paper, utilize the following workflow:
 
 #### Workflow ####
 1. Define a directory where output files will be saved (used saved_fils)
-2. Create a configuration file in the configs folder. 
-3. Run model using following command ``E_runner.py ../configs/NAME.yaml``
-4. Use the join_df.py script to aggregate outputs
-5. Visualize results in the notebooks directory
+2. Create a configuration file in the configs folder.
+3. Create a subfolder in the results directory where all the .csv files will be saved. We will call this directory as ``DIREC_NAME`` for now. 
+4. Run the model using following command in the src/ directory: ``python3 E_runner.py ../configs/NAME.yaml``
+5. Once the model is finished run: ``python3 join_df.py results DIREC_NAME``
+6. Visualize results in the notebooks directory
 
 The different variables present in the .yaml files in the configs directory are defined below 
 
