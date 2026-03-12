@@ -37,6 +37,8 @@ Clone the repository using the following command:
 
 **src/** &rarr;      contains the code used for the metatpopulation model and dynamics. Also includes helper functions used in the visualizations
 
+**scripts/** &rarr;   contains the code used to generate the files used in the clean_season_agg and clean_month_agg folders
+
 ### Usage ###
 --------------
 
