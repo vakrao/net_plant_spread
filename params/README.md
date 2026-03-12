@@ -11,6 +11,7 @@ The folders are organized as follows:
 
 The individual files are detailed as follows:
   - **raw_individual_data.csv**: contains individual movements, where the source property id and the destination property id are provided for each movement, as well as the year, season, and month when it occurred
+  - **yearly_clean_agg.csv**: contains aggregated yearly movements, where the source property id and the destination property id are given for each aggregated movement, as well as the frequency of movements that occur 
   - **pub_clean_prop_dat.csv**: this dataset contains property ids, hectare size of each property, and binary values to denote whether the property is used in calibration
 
 
