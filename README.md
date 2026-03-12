@@ -27,15 +27,15 @@ Clone the repository using the following command:
 
 ### Folder Structure ### 
 ----------------
-configs/ &rarr; contains all .yaml files needed to run model
+configs/ &rarr;  contains all experimental configuration files 
 
 notebook/ &rarr; contains example jupyter notebooks used to visualize lines of best fit
 
-params/ &rarr; contains mobility network datasets generated from OnSide mobility data, as well as incidence datasets
+params/ &rarr;   contains mobility network datasets generated from OnSide movement data. Folder also contains incidence datasets. 
 
-results/ &rarr; cotains .csv files generated from E_runner script. Data from these files are used for visualizations and results. This folder only contains data for best-fitting configurations
+results/ &rarr;  contains .csv files generated from E_runner script. This folder only contains the monthly results of the best-fitting configurations for the raw data and moving average infection data. 
 
-src/ &rarr; contains the code for the metatpopulation model and mean-field dynamics, as well as the helper functions used in the notebook directory
+src/ &rarr;      contains the code used for the metatpopulation model and dynamics. Also includes helper functions used in the visualizations
 
 ### Usage ###
 --------------
@@ -72,7 +72,7 @@ The different variables present in the .yaml files in the configs directory are 
 - max_infected: integer specifying the maximum number of infected before the simulation ends
 - run_type: string, can either be set to "calib" or "run".
 
-After specifying the .yaml file, run the following command in the project directory. 
+After specifying the .yaml file, run the following command in the project directory: 
 
 ```python
 python3 src/E_runner.py configs/example.yaml
@@ -127,6 +127,8 @@ The function `run_si_model` runs the mean-field approximation of our S-I model u
 
 **Output**
 - .csv written to folder defined in configuration file using variable ``save_folder``
+- The .csv file will have 14 rows, where each row gives the month, incidence, and number of total infections that have occured to that point
+- An output file is generated for all seeds, values of beta, and alpha values that have been written in the configuration file used for the experiment
 
 
 
