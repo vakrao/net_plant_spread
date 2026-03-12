@@ -128,7 +128,7 @@ The function `run_si_model` runs the mean-field approximation of our S-I model u
 **Output**
 - .csv written to folder defined in configuration file using variable ``save_folder``
 - The .csv file will have 14 rows, where each row gives the month, incidence, and number of total infections that have occured to that point
-- An output file is generated for all seeds, values of beta, and alpha values that have been written in the configuration file used for the experiment
+- An output file is generated for each combination of values for the: seeds, alpha values, D values, and beta values
 
 
 
