@@ -33,7 +33,7 @@ Clone the repository using the following command:
 
 **results/** &rarr;  contains .csv files generated from E_runner script. This folder only contains the monthly results of the best-fitting configurations for the raw data and moving average infection data. 
 
-**src/** &rarr;      contains the code used for the metatpopulation model and dynamics. Also includes helper functions used in the visualizations 
+**src/** &rarr;      contains the code used for the metapopulation model and dynamics. Also includes helper functions used in the visualizations 
 
 ### Usage ###
 --------------
@@ -49,7 +49,7 @@ To recreate the results generated in the paper, utilize the following workflow:
 2. Create a configuration file in the configs folder.
 3. Create a subfolder in the results directory where all the .csv files will be saved. We will call this directory as ``DIREC_NAME`` for now. 
 4. Run the model using following command in the src/ directory: ``python3 E_runner.py ../configs/NAME.yaml``
-5. Once the model is finished run: ``python3 join_df.py results DIREC_NAME``
+5. Once the model finished, run: ``python3 join_df.py results DIREC_NAME``
 6. Visualize results in the notebooks directory
 
 The different variables present in the .yaml files in the configs directory are defined below 
