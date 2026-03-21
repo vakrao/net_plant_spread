@@ -3,8 +3,7 @@
 
 ### Overview ###
 ----------
-This research project uses data from OnSide, an agritech company with biosecurity technology covering more than 20,000 properties from multiple industries across several countries, including New Zealand and Australia. We use the data provided by Onside for the  horticulture industry in New Zealand to create high-resolution yearly, seasonal, and monthly mobility networks for 2022. We link different properties if at least one movement exists between them in a defined time period. We then leverage a Susceptible-Infected metapopulation
-model to describe plant disease dynamics and calibrate the model to replicate the timing and severity of a past outbreak of Pseudomonas syringae pv. actinidiae (Psa-V). 
+This research project uses data from OnSide, an agritech company with biosecurity technology covering more than 20,000 properties from multiple industries across several countries, including New Zealand and Australia. We use the data provided by Onside for the  horticulture industry in New Zealand to create high-resolution yearly, seasonal, and monthly mobility networks for 2022. We link different properties if at least one movement exists between them in a defined time period. We then leverage a Susceptible-Infected metapopulation model to describe plant disease dynamics and calibrate the model to replicate the timing and severity of a past outbreak of Pseudomonas syringae pv. actinidiae (Psa-V). 
 
 ### Installation ### 
 -------------
@@ -35,12 +34,16 @@ All relevant packages are listed in the ``pyproject.toml`` file.
 ----------------
 **configs/** &rarr;  contains all experimental configuration files 
   |
+
   --**manuscript_configs/** &rarr; contains configs used to generate manuscript figures
 
 **data/** &rarr;   contains mobility network datasets generated from OnSide movement data. Folder also contains incidence datasets. 
   |
+
   --**clean_month_agg/** &rarr; contains monthly aggregated data
+
   --**clean_season_agg/** &rarr; contains seasonal aggregated data
+
   --**incidence_data/** &rarr; contains incidence data 
 
 **results/** &rarr;  contains `.csv` files generated from `E_runner.py` script. This folder only contains the monthly results of the best-fitting configurations for the raw data and moving average infection data. 
@@ -97,6 +100,7 @@ python3 scripts/join_df.py A B
 ```
 
 #### Explanation #### 
+
 The model runs using the created `.yaml` files. These `.yaml` files specify parameter values, filepaths for the data, and the directory that the model output will be saved.  
 
 To specify the number of seeds, there are two options using the `run` option:
