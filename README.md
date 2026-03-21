@@ -14,40 +14,51 @@ Clone the repository using the following command:
   git clone https://github.com/vakrao/net_plant_spread.git
 ```
 
- uv is used as our package manager instead of pip. To install the required packages, run the following command
+ uv is used as our package manager instead of pip. First build the needed packages,running the following command
  ```bash
  uv build
  ```
- After running the build, the nz_env folder containing the virtual environment should be present. All relevant packages are listed in the ``pyproject.toml`` file.  
+
+ After building the package, now we can install the needed package.
+ ```bash
+ uv sync
+ ```
+
 
  To run the code, we must activate the virtual environment using the follow command:
  ```bash
-  source nz_env/bin/activate
+  source .venv/bin/activate
  ```
+All relevant packages are listed in the ``pyproject.toml`` file.  
 
 ### Folder Structure ### 
 ----------------
 **configs/** &rarr;  contains all experimental configuration files 
+  |
+  --**manuscript_configs/** &rarr; contains configs used to generate manuscript figures
 
 **data/** &rarr;   contains mobility network datasets generated from OnSide movement data. Folder also contains incidence datasets. 
+  |
+  --**clean_month_agg/** &rarr; contains monthly aggregated data
+  --**clean_season_agg/** &rarr; contains seasonal aggregated data
+  --**incidence_data/** &rarr; contains incidence data 
 
-**results/** &rarr;  contains .csv files generated from E_runner script. This folder only contains the monthly results of the best-fitting configurations for the raw data and moving average infection data. 
+**results/** &rarr;  contains `.csv` files generated from `E_runner.py` script. This folder only contains the monthly results of the best-fitting configurations for the raw data and moving average infection data. 
 
-**src/** &rarr;      contains the code used for the metapopulation model and dynamics. Also includes helper functions used in the visualizations 
+**src/** &rarr; contains the code used for the metapopulation model and dynamics. Also includes helper functions used in the visualizations 
 
 ### Usage ###
 --------------
 
-Our model operates using .yaml files. To run our model, first define a .yaml config file specifying all parameter values.
-Run ``E_runner.py`` using the defined config file. ``E_runner.py`` will output a .csv file into the folder of choice, consisting
-of the monthly cumulative infection values.
+Our model operates using `.yaml` files. To run our model, first define a `.yaml` config file specifying all parameter values.
+Run ``E_runner.py`` using the defined config file. ``E_runner.py`` will output a `.csv` file into the folder of choice, consisting of the monthly cumulative infection values.
 
 To recreate the results generated in the paper, utilize the following workflow: 
 
 #### Workflow ####
-1. Define a directory where output files will be saved (used saved_fils)
+1. Define a directory where output files will be saved. (use `results/` directory) 
 2. Create a configuration file in the configs folder.
-3. Create a subfolder in the results directory where all the .csv files will be saved. We will call this directory as ``DIREC_NAME`` for now. 
+3. Create a subfolder in the results directory where all the .csv files will be saved. We denote this directory as ``DIREC_NAME`` for now. 
 4. Run the model using following command in the src/ directory: ``python3 E_runner.py ../configs/NAME.yaml``
 5. Once the model finished, run: ``python3 join_df.py results DIREC_NAME``
 6. Visualize results in the notebooks directory
@@ -55,21 +66,21 @@ To recreate the results generated in the paper, utilize the following workflow:
 The different variables present in the .yaml files in the configs directory are defined below 
 
 **.yaml File parameters** 
-- b_w: list of floats
-- b_b: list of floats
-- alpha: list of loats
-- deltaT: either 1,3, or 12 (monthly, seasonal, or yearly)
-- L: list of floats. Number of months the model is allowed to run without reporting infections. Set to 3 to replicate paper results. 
-- T: integer
-- P: list of integers
-- prop_fn: filepath to property data
-- net_file: filepath to aggregated yearly data
-- inc_file: filepath to incidence data
-- save_folder: filepath to folder saving seed output data
-- D: list of floats
-- pool_amount: integer specifying number of threads to use
-- max_infected: integer specifying the maximum number of infected before the simulation ends
-- run_type: string, can either be set to "calib" or "run".
+- `b_w`: list of floats
+- `b_b`: list of floats
+- `alpha`: list of loats
+- `deltaT`: either 1,3, or 12 (monthly, seasonal, or yearly)
+- `L`: list of floats. Number of months the model is allowed to run without reporting infections. Set to 3 to replicate paper results. 
+- `T`: integer
+- `P`: list of integers
+- `prop_fn`: filepath to property data
+- `net_file`: filepath to aggregated yearly data
+- `inc_file`: filepath to incidence data
+- `save_folder`: filepath to folder saving seed output data
+- `D`: list of floats
+- `pool_amount`: integer specifying number of threads to use
+- `max_infected`: integer specifying the maximum number of infected before the simulation ends
+- `run_type`: string, can either be set to "calib" or "run".
 
 After specifying the .yaml file, run the following command in the project directory: 
 
@@ -77,7 +88,7 @@ After specifying the .yaml file, run the following command in the project direct
 python3 src/E_runner.py configs/example.yaml
 ```
 
-E_runner calls the function run_si_model in mod_si.py and saves individual output files for every seed in the directory of choice from the run .yaml file. 
+`E_runner.py` calls the function `run_si_model` in `mod_si.py` and saves individual output files for every seed in the directory of choice from the run `.yaml` file. 
 
 To join together the output for all seeds into one file, specify the first folder A and the folder B nested within A, containing all the output files
 
@@ -86,15 +97,16 @@ python3 scripts/join_df.py A B
 ```
 
 #### Explanation #### 
-The model runs using the created .yaml files. These .yaml files specify parameter values, filepaths for the data, and the directory that the model output will be saved.  
+The model runs using the created `.yaml` files. These `.yaml` files specify parameter values, filepaths for the data, and the directory that the model output will be saved.  
 
-To specify the number of seeds, there are two options using the "run" option:
-  1. "calib" to use the same seeds that were used when calibrating the model in the paper
-  2. "real" to use all possible seeds. 
+To specify the number of seeds, there are two options using the `run` option:
+  1. `calib` to use the same seeds that were used when calibrating the model in the paper
+  2. `real` to use all possible seeds. 
 
-If you would like to try changing the start_month and generating model output, run vary_sm.py similar to E_runner.py using a .yaml file, except specify the integer representing the startmonth in the "sm" variable path
+To change the start month when the model starts,use `run vary_sm.py`. This script is similar to `E_runner.py` using a `.yaml` file, except the integer representing the start month must be set in the `sm` variable path.
 
 ### Key Functions ###
+--------------
 
 #### Reading Network Data ####
 
@@ -125,8 +137,8 @@ The function `run_si_model` runs the mean-field approximation of our S-I model u
 - `init_month`: calendar month when infection starts
 
 **Output**
-- .csv written to folder defined in configuration file using variable ``save_folder``
-- The .csv file will have 14 rows, where each row gives the month, incidence, and number of total infections that have occured to that point
+- `.csv` written to folder defined in configuration file using variable ``save_folder``
+- The `.csv` file will have 14 rows, where each row gives the month, incidence, and number of total infections that have occured to that point
 - An output file is generated for each combination of values for the: seeds, alpha values, D values, and beta values
 
 

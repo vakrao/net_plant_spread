@@ -1,10 +1,10 @@
 **Directory Description**
 --------------
-Here, we list two different notebooks. The first notebook, fig_graph_configs, graphs the values observed in the results/ folder from the different best-fitting parameter values for the raw data and moving average (MA) datasets. 
+Here, we list two different notebooks. The first notebook, `fig_graph_configs.ipynb`, graphs the values observed in the `results/` folder from the different best-fitting parameter values for the raw data and moving average (MA) datasets. 
 
-The other  notebook, create_ma, generates the Moving Average data based on the extracted raw data. 
+The other  notebook, `create_ma.ipynb`, generates the moving average data based on the extracted raw data. 
 
-The notebooks used to visualize the figures in the manuscript are in the manuscript_notebooks folder. 
+The notebooks used to visualize the figures in the manuscript are in the `manuscript_notebooks` folder. 
 
 Notebooks
 ---------
