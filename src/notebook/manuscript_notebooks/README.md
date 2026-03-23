@@ -1,6 +1,8 @@
+** Directory Structure **
+------
 Within this directory contains the code used to generate the visualizations in the manuscript. 
 
-We do not include the notebooks used to generate, as they require latitude and longitude data:
+We do not include the notebooks used to generate the following figures, as they require latitude and longitude data:
 -  Figure S5, S6, S7
 -  Figure 1, 5
 
