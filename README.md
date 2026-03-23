@@ -47,7 +47,7 @@ All relevant packages are listed in the ``pyproject.toml`` file.
 
 **src/** &rarr; contains the code used for the metapopulation model and dynamics. Also includes helper functions used in the visualizations 
   - **src/data-gen/** &rarr; contains scripts for generating aggregated network files
-  - **src/notebook/&& &rarr; contains jupyter notebooks used for visualizations
+  - **src/notebook/** &rarr; contains jupyter notebooks used for visualizations
 
 ### Usage ###
 --------------
