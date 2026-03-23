@@ -70,7 +70,7 @@ The different variables present in the .yaml files in the configs directory are 
 **.yaml File parameters** 
 - `b_w`: list of floats
 - `b_b`: list of floats
-- `alpha`: list of loats
+- `alpha`: list of floats (set to 0.1 in all simulations)
 - `deltaT`: either 1,3, or 12 (monthly, seasonal, or yearly)
 - `L`: list of floats. Number of months the model is allowed to run without reporting infections. Set to 3 to replicate paper results. 
 - `T`: integer
