@@ -1,6 +1,6 @@
 Data Description
 --------------
-Mobility data from the biosecurity company is used in our metapopulation model.  Our model assumes that data will be organized in one of three ways: monthly, seasonal, or yearly, depending on the aggregation used. To achieve the results similar to the paper, use the data in this folder the the notebooks in the `notebook/manuscript_notebooks` folder. 
+Mobility data from the biosecurity company is used in our metapopulation model.  Our model assumes that data will be organized in one of three ways: monthly, seasonal, or yearly, depending on the aggregation used. 
 
 For more information on how we filtered the data, refer to the paper. The implementation of the filtering can be observed in the `filter_seeds` function in `src/helpers.py`, and in the `find_viable` function in `src/graph_helpers.py`. 
 
