@@ -8,6 +8,8 @@ We do not include the notebooks used to generate the following figures, as they 
 
 Note: some filepaths and names might have to be changed to replicate results. The gridsearches will have to be run and compiled to visualize the results seen in the manuscript as well - we only include the data given the best-fitting configs in the results/ folder. 
 
+**Notebook Files**
+--------
 The notebooks are structured as follows. 
 
 - **fig_D_L.ipynb**: generates Figure 6,7, and S8
