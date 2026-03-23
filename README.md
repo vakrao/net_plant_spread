@@ -33,18 +33,15 @@ All relevant packages are listed in the ``pyproject.toml`` file.
 ### Folder Structure ### 
 ----------------
 **configs/** &rarr;  contains all experimental configuration files 
-  |
-
-  --**manuscript_configs/** &rarr; contains configs used to generate manuscript figures
+  - **configs/manuscript_configs/** &rarr; contains configs used to generate manuscript figures
 
 **data/** &rarr;   contains mobility network datasets generated from OnSide movement data. Folder also contains incidence datasets. 
-  |
 
-  --**clean_month_agg/** &rarr; contains monthly aggregated data
+  - **data/clean_month_agg/** &rarr; contains monthly aggregated data
 
-  --**clean_season_agg/** &rarr; contains seasonal aggregated data
+  - **data/clean_season_agg/** &rarr; contains seasonal aggregated data
 
-  --**incidence_data/** &rarr; contains incidence data 
+  - **data/incidence_data/** &rarr; contains incidence data 
 
 **results/** &rarr;  contains `.csv` files generated from `E_runner.py` script. This folder only contains the monthly results of the best-fitting configurations for the raw data and moving average infection data. 
 
