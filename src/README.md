@@ -1,6 +1,6 @@
 **Folder Organization**
 -------------
-The src/ folder contains all the code needed to run the model. 
+The `src/` folder contains all the code needed to run the model. 
 
 - **mod_si.py** &rarr; main model script `E_runner.py` calls functions in this file to run the S-I model
 
@@ -24,7 +24,7 @@ The src/ folder contains all the code needed to run the model.
 **Sub-Folders**
 -----------
 
-**data-gen/** &rarr;contains the code used to generate the files used in the `clean_season_agg/` and `clean_month_agg/` folders
+- **data-gen/** &rarr;contains the code used to generate the files used in the `clean_season_agg/` and `clean_month_agg/` folders
 
-**notebook/** &rarr; contains example jupyter notebooks used to visualize lines of best fit
+- **notebook/** &rarr; contains example jupyter notebooks used to visualize lines of best fit
 
