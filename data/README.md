@@ -7,17 +7,17 @@ For more information on how we filtered the data, refer to the paper. The implem
 Directory Organization
 --------------------
 
-- **clean_month_agg/**: folder that contains 12 files, where each pertains to a unique month. Each file shows the number of movements between source-destination pairs occurring in that unique month.
+- **clean_month_agg/** &rarr; folder that contains 12 files, where each pertains to a unique month. Each file shows the number of movements between source-destination pairs occurring in that unique month.
 
-- **clean_season_agg/**: folder that contains 4 files, where each pertains to each season. Each file shows the number of movements between source-destination pairs occurring in that season.
+- **clean_season_agg/** &rarr; folder that contains 4 files, where each pertains to each season. Each file shows the number of movements between source-destination pairs occurring in that season.
 
-- **yearly_clean_agg.csv**: contains aggregated yearly movements, where the source property id and the destination property id are given for each aggregated movement, as well as the frequency of movements that occur
+- **yearly_clean_agg.csv** &rarr; contains aggregated yearly movements, where the source property id and the destination property id are given for each aggregated movement, as well as the frequency of movements that occur
 
-- **incidence_data/**: folder that contains the two files recording the incidence data used in the model: `raw_data.csv` and `ma_data.csv`, where "ma" refers to the moving average dataset while "raw" refers for the extracted interpolated incidence data from a report by Greer and Saunders. Refer to page 3 in the report for the number of infected orchards {https://kvh.org.nz/assets/documents/About-KVH-tab/The_Costs_of_Psa_V_to_the_New_Zealand_Kiwifruit_Industry__Wider_Community_Report.pdf}
+- **incidence_data/** &rarr; folder that contains the two files recording the incidence data used in the model: `raw_data.csv` and `ma_data.csv`, where "ma" refers to the moving average dataset while "raw" refers for the extracted interpolated incidence data from a report by Greer and Saunders. Refer to page 3 in the report for the number of infected orchards {https://kvh.org.nz/assets/documents/About-KVH-tab/The_Costs_of_Psa_V_to_the_New_Zealand_Kiwifruit_Industry__Wider_Community_Report.pdf}
 
-- **raw_individual_data.csv**: contains individual movements, where the source property id and the destination property id are provided for each movement, as well as the year, season, and month when it occurred
+- **raw_individual_data.csv** &rarr; contains individual movements, where the source property id and the destination property id are provided for each movement, as well as the year, season, and month when it occurred
 
-- **pub_clean_prop_dat.csv**: this dataset contains property ids, hectare size of each property, and binary values to denote whether the property is used in calibration. 
+- **pub_clean_prop_dat.csv** &rarr; this dataset contains property ids, hectare size of each property, and binary values to denote whether the property is used in calibration. 
 
 
 
