@@ -1,4 +1,4 @@
-** Directory Structure **
+**Directory Structure**
 ------
 Within this directory contains the code used to generate the visualizations in the manuscript. 
 
