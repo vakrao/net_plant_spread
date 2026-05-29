@@ -1,0 +1,506 @@
+% ****** Start of file apssamp.tex ******
+%
+%   This file is part of the APS files in the REVTeX 4.2 distribution.
+%   Version 4.2a of REVTeX, December 2013
+%
+%   Copyright (c) 2013 The American Physical Society.
+
+\documentclass[aps,physrev,reprint,superscriptaddress]{revtex4-1}
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{hyperref}% add hypertext capabilities
+%\usepackage[mathlines]{lineno}% Enable numbering of text and display math
+%\linenumbers\relax % Commence numbering lines
+\usepackage{float}
+\usepackage{booktabs} % in preamble
+\usepackage{multirow}
+\usepackage{lineno}
+%\linenumbers
+%\nolinenumbers
+
+\usepackage{comment}
+\usepackage[english]{babel}
+%TC:incbib
+
+\begin{document}
+
+%-----Title------%
+%\title{Modeling Plant Disease Epidemics in Networks}
+\title{Modeling plant disease spread via high-resolution human mobility networks}
+\author{Varun K. Rao}
+\affiliation{Center for Complex Networks and Systems Research, Luddy School of Informatics, Computing, and Engineering, Indiana University, Bloomington, Indiana 47408, USA}
+\affiliation{School of Public Health, Indiana University, Bloomington, Indiana 47408, USA}
+\author{Ryan Higgs}
+\affiliation{Onside, Christchurch,  New Zealand.}
+\author{Hautahi Kingi}
+\affiliation{Onside, Christchurch,  New Zealand.}
+\author{Filippo Radicchi}
+\affiliation{Center for Complex Networks and Systems Research, Luddy School of Informatics, Computing, and Engineering, Indiana University, Bloomington, Indiana 47408, USA}
+\author{Santo Fortunato}
+\affiliation{Center for Complex Networks and Systems Research, Luddy School of Informatics, Computing, and Engineering, Indiana University, Bloomington, Indiana 47408, USA}
+\author{Maria Litvinova}
+\email{malitv@iu.edu}
+\affiliation{School of Public Health, Indiana University, Bloomington, Indiana 47408, USA}
+%TC:incbib
+
+
+
+% abstract is 194 words 
+\begin{abstract}
+Human mobility plays a crucial role in the spread of human diseases, but is rarely quantified in plant disease epidemics. 
+To address this gap, we integrate a unique, high-resolution network of human movements in New Zealand with a metapopulation model to mechanistically simulate pathogen transmission. 
+We calibrate the model on the nationwide 2010 kiwifruit vine disease (Psa-V) outbreak, and show that it reproduces the observed spatiotemporal spread, confirming that the human mobility network is a strong foundation for modeling human-mediated transmission dynamics. By analyzing spatial infection trends, we find that most dispersal occurs locally, as often illustrated in the plant-outbreak literature. However, sporadic long-range connections are necessary to model a nationwide outbreak.
+Using the model as an in-silico laboratory, we demonstrate that the severity of human-mediated pathogen transmission is highly sensitive to the timing and location of initial importation. We observe a potential causal link between seasonal labor patterns and epidemic risk in high-traffic seasons. 
+This study showcases a novel data-driven framework for modeling and predicting the spatiotemporal spread of agricultural pathogens when human-mediated dispersal is epidemiologically relevant, underscoring the importance of leveraging human mobility networks for building better biosecurity systems. 
+\end{abstract}
+
+\keywords{mathematical modeling, networks, mobility network, plant disease, disease spread, biosecurity}
+%Use the showkeys class option if keyword
+
+ %display desired
+\maketitle
+%\tableofcontents
+
+\section{Introduction}
+
+
+% NEW IDEA: plant disease spreads in many ways, and is modeled in very specific ways
+
+%Direct and indirect impacts of human infections on population health and economic well-being captured the attention of scientific and general audiences in recent years, overshadowing the impact of plant disease outbreaks on national and international biosecurity. 
+Plant diseases can devastate countries' economies, ecosystems, and population health \cite{laine2023plant, al2017impact, chaves2025, Liebhold2012plantimp, Epanchin2017, Brasier2008uk}. The loss and degradation of crop yields caused by these diseases have the potential to be catastrophic, as illustrated by the potato blight behind the Great Famine in Ireland in 1845-1850 \cite{al2017impact}. Currently, the annual loss of crop yields due to plant disease is estimated to be 30\% globally \cite{gai2024plant}, resulting in food insecurity and increasing threats to biosecurity across the globe.     
+Based on a review conducted by Fielder \textit{et al.}~\cite{fielder2024synoptic}, at least 38 new plant pathogens were identified in new locations or on new hosts, while 10 global plant outbreaks in 2023 challenged crop production, food prices, and food security. 
+Predicting the dynamics of plant disease outbreaks and consequently responding to these persistent threats is becoming increasingly complex~\cite{laine2023plant} due to changes in pathogens, their hosts, climate, and human behaviors. Because plant pathogens spread through a wide range of vectors and dispersal mechanisms - most commonly insects, wind, and rain - studies have emphasized environment-related host landscape modeling. A variety of approaches have been utilized to understand and simulate the dispersal of the pathogen across the host landscape, including lattice-based models using kernel functions for dispersal~\cite{yuen2015landscape, cendoya_individual-based_2024,orozco2019early,landry_spatio-temporal_2021,signes-pont_epidemic_2020,white2017modelling,severns2022dispersal,chapman2025modelling,suprunenko2025predicting}, Bayesian methods~\cite{adrakey2023bayesian,varghese2020estimating}, meta-population modeling~\cite{severns2022dispersal,rimbaud2018using}, and 
+mean-field approximations~\cite{forster2007optimizing}. For pathogens, especially fungi, dispersed through wind on long distances and capable of long-time survival, computational models employing atmospheric data and wind matrices \cite{kling2020global,kling2021global,brown2002aerial,leyronas2018assessing,radici2022early,brodsky2023assessing} have been used to simulate the long-distance dispersal of the pathogen across the host landscape. For example, Radici et al. in 2024 \cite{radici2024metapopulation} combined short-range lattice-based landscape dispersal with atmospheric inter-connectivity wind data to simulate how brown rot of peach could spread nationally within France. Some of the studies have also incorporated human-mediated dispersal together with environmental spread, either through a dispersal kernel function ~\cite{godding2023developing, ellis2025} or through a sampling from a distribution ~\cite{chaves2025}, when epidemiological data was available for calibration. With growing connectivity, human-mediated spread through contaminated equipment and transport~\cite{ocimati2021farmer, hardy_pathway_2013,hodkinson1997plant}, vector dispersal~\cite{ellis2025}, infected plant material~\cite{ristaino2000new}, or trade and supply networks ~\cite{pautasso2014network, marshall2021assessing,andersen2019modeling,moslonka2011networks,benedetti_spatial_2017,numminen2020spread} has become an important force in driving rapid, medium- and long-distance transmission events. The movement of plant material has been documented to connect potentially susceptible properties up to 350 km away from each other~\cite{szyniszewska2021smallholder}. However, few studies have explored the impact of fluctuations in human mobility and consequently human-mediated dispersal on the long-distance spread of plant pathogens.
+
+  % GAP in modeling techniques and how we ADDRESS GAP generally,
+  The few existing studies on the role of between-property mobility networks focus on trading~\cite{marshall2021assessing,andersen2019modeling,moslonka2011networks}, transport networks~\cite{benedetti_spatial_2017,numminen2020spread}, or geographical distance~\cite{sutrave2012identifying,strona2017network}. However, these studies use static networks to model pathogen dispersal, and do not account for the temporal changes in the magnitude of the traffic between the properties. Using inspiration from studies modeling spreading processes on temporal networks of livestock movements, we represent snapshots of movements at different time periods~\cite{bajardi2011dynamical,bajardi2012optimizing,valdano2015predicting,schirdewahn2021early} to fill this gap. We propose a multi-scale meta-population model based on empirical network data of human mobility between agricultural properties. Our approach combines a fully-mixed population model for within-property spread and create a mobility-based network model for between-property spread.
+
+ %and where DATA comes from
+ Our work eliminates the main barrier to integrating human mobility into plant disease epidemiology: the lack of high-quality spatiotemporal data suitable for plant disease modeling. Our unique dataset for the horticulture industry of New Zealand provides time-stamped origin-destination data for movements between properties. The data was provided and managed by Onside, an agritech company with biosecurity technology covering more than 20,000 properties from multiple industries across several countries, including New Zealand and Australia. 
+
+% talk about inspiration from animal literature and give overview of findings in paper 
+
+We leverage a Susceptible-Infected metapopulation model~\cite{colizza2008epidemic} to describe plant disease dynamics and calibrate the model to replicate the timing and severity of a past outbreak of \textit{Pseudomonas syringae pv. actinidiae} (Psa-V) \cite{birnie2014lessons}, a bacterial disease that was introduced to New Zealand in 2010 and is still present and widespread throughout the country. The disease devastated the country's kiwifruit industry~\cite{birnie2014lessons,vanneste2017scientific,froud2014relationships}, and was projected to cost kiwifruit growers $\$310$ to $\$410$ million dollars for five years after the outbreak \cite{greer2012costs} due to a combination of fast spread and pathogen severity ~\cite{froud2015review,cameron2014pseudomonas}. Psa-V bacteria can colonize both inner and outer tissues of the kiwi from flowers to roots and grow best in humid conditions (e.g., after rainfall) in temperatures between 10°C to 20°C. The bacteria can be spread through natural dispersal (mainly rain-splash and wind-blown rain) and human-mediated dispersal through the movement of infected materials, use of the same machinery and tools, and through vehicle tires \cite{froud2015review, hardy_pathway_2013}. The bacteria can even survive on wet raincoats and wet soil on animal feet. While the pathogen can also survive on leaves for several weeks, depending on a combination of climatic factors \cite{deng2023survival}, it is unknown how long and how often the bacteria can survive and remain infectious when transported by wind. Thus, local spread of the Psa-V is thought to occur from a combination of environmental and human-mediated dispersal, while long-distance dispersal ($> 10$ km) is primarily driven by the human-mediated dispersal \cite{froud2015review}.  
+
+As human-mediated dispersal plays a role in both short- and long-range spread of Psa-V, we illustrate how our modeling approach can be utilized for Psa-V outbreaks using data-driven mobility networks. To incorporate the duality of the localized vs. long-distance dispersal, we calibrate the model using within-property transmission probability that incorporates both environmental and human-mediated dispersal, and between-property transmission probability largely reflecting human-mediated spread.  We explore three different temporal aggregations of the network, similar to Bajardi \textit{et al.} \cite{bajardi2011dynamical}, to reflect horticulture industry seasonality. By using this model incorporating seasonal dynamics of the human mobility network, we illustrate that the month of pathogen importation affects epidemic size, peak, and onset time, demonstrating a direct link between movement seasonality and outbreak dynamics. Our modeling framework demonstrates how human mobility can be incorporated into a computational model to study the spread of plant disease and how the dynamics of human mobility can contribute to the long-distance dispersal of plant disease.  
+%This provides a practical guide to the development, calibration, and utilization of computational models that take advantage of human mobility data for predictive plant disease epidemiology, targeted surveillance, and biosecurity.
+
+
+
+\section{Methods}
+\subsection{Movement Data}
+ % NZ MAP FIGURE
+\begin{figure}
+    \centering
+    \includegraphics[width=1.2\linewidth]{figs/main_text/NZ_seeds.pdf}
+    \caption{\textbf{Map of the horticulture industry in New Zealand.} Each point represents a property in the Onside dataset ($N=2,281$ total properties). Black points denote the $S=1,300$ properties located in the Bay of Plenty, which are used as seeds for the spreading dynamics simulated by our model. }
+    \label{fig:nz-seeds}
+\end{figure}
+
+% Discuss data source
+
+We rely on data recorded by the Onside mobile app used by farmers and businesses servicing rural properties, such as contractors and other service providers. Data includes the information when users enter (``check-in'') one of the registered properties. Check-in events can either be recorded manually (i.e., a user checks in arriving at a property) or automatically (i.e., triggered based on digital geofence technology) and are associated with time stamps on a minute resolution.
+
+Onside data contains information about individual properties, such as their area and geographical coordinates, and the industry of the property: horticulture, agriculture, and farming. Aiming to model the Psa-V outbreak in New Zealand, we focus on the $N = 2,281$ properties in the horticulture industry. A geographical map of the horticultural system in New Zealand reconstructed using Onside data is visualized in Figure \ref{fig:nz-seeds}. According to the company statistics, the dataset represents approximately 70\% of the kiwifruit production area in New Zealand and covers all the geographic areas where orchards exist.   
+
+%define network set 
+  From the Onside data, we extract all $P = 86,624$ movements recorded between January 1, 2022, and December 31, 2022 (see Figure~\ref{fig:1} for a schematic illustration). The data was pre-processed so time-stamps are mapped to calendar months to match available epidemiologic monthly data. As a result, the same movement can appear multiple times in the data. Specifically, the $p$-th movement data is denoted by $z_p = (o_p,d_p,m_p)$, representing a person checking into property $d_p$ in month $m_p$, with $o_p$ representing the origin property the same person checked into previously. 
+  %The indices $o_p $ and $d_p$ denote property labels $1$ through $N$ ($N = 2,281$), while $m_p$ corresponds to one of the twelve calendar months (January–December).
+
+We construct directed and weighted networks of movements for each month, excluding all movements with the same origin and destination. The generic element of the weight matrix for month $m$ is
+\begin{equation}
+\omega^{(m)}_{j \to i} = \frac{1}{30 \, \textrm{days} } \, \sum_{p = 1}^P  \delta_{o_p,j} \delta_{d_p,i}  \delta_{m_p, m} \; 
+    \label{eq:weight_month}
+\end{equation}
+where the Kronecker delta function is such that $\delta_{x,y} = 1$ if $x = y$ and $\delta_{x,y} = 0$ otherwise. $\omega^{(m)}_{j \to i}$ quantifies the average number of daily movements 
+%between properties $j$ and $i$ 
+from property $j$ to property $i$
+observed in month $m$.
+
+Similarly, we can generate directed weighted networks of movements for the four seasons: fall, winter, spring, and summer. In such a case, the generic element of the weight matrix is
+\begin{equation}
+\omega^{(s)}_{j \to i} = \frac{1}{90 \, \textrm{days} } \, \sum_{p = 1}^P  \delta_{o_p,j} \delta_{d_p,i} \delta_{f(m_p), s} \; 
+    \label{eq:weight_season}
+\end{equation}
+where $f(m)$ is the function that maps months to seasons, defined as follows: $f(m) = $ fall for $m = $ March, April and May,  $f(m) = $ winter for $m = $ June, July and August,  $f(m) = $ spring for $m = $ September, October, November, and $f(m) = $ summer for $m = $  December, January and February.  
+
+The yearly version of the network is instead given 
+\begin{equation}
+\omega_{j \to i} = \frac{1}{365 \, \textrm{days} } \, \sum_{p = 1}^P  \delta_{o_p,j} \delta_{d_p,i}   \; 
+    \label{eq:weight_year}
+\end{equation}
+where all movements in the year are aggregated together.
+
+
+\begin{figure*}[!htb]
+    \centering
+    \includegraphics[width=\linewidth]{revise_figs/edited_farm_schem.pdf}
+    \caption{\textbf{Schematic representation of mobility networks.} Using the Onside movement dataset, we generate networks representing movements of workers between properties.
+    In all networks, we measure the number of movements of people between properties. 
+    %( here represented by the barns in the figure,  which are nodes in the network), which vary based on the source and destination. 
+    %(the arrows between barns here represent movements and the edges in the network)  
+    A movement is directed in nature and is recorded when a person leaves a source property and checks into a destination property.  In this figure, 
+    a property is represented by a barn, and a movements between two properties is denoted by an arrow.  
+    The size of the tractor on top of an arrow is representative for the number of movements: the larger the tractor, the more movements occur. In a similar fashion, the width of the arrows also vary according to the number of movements. 
+    Depending on the aggregation level of the data, we define either yearly, seasonal, or monthly networks.
+    People moving between properties spread plant disease, and a higher frequency of movements between properties increases the probability of spreading. We note that starting the infection during different seasons or months can lead to different epidemic outcomes, since monthly movement networks differ. Infections are colored red showing how seeding infections during different seasons or months can lead to different epidemic pathways. }
+    \label{fig:1}
+\end{figure*}
+% \cite{masuda2016guide,holme2019temporal}
+
+A basic analysis of the constructed networks reveals that the volume of movements in the horticulture industry is highly seasonal, peaking in the spring and summer seasons (e.g., February and November in the Figure \ref{fig:vary-c}C inset), and reaching the lowest numbers in winter (June and July). This aligns with horticulture industry labor trends, where employment peaks in the summer and is smallest in the winter~\cite{ffcove2025seasonal,timmins2009seasonal}.
+
+% review how the table is created
+ In Table ~\ref{tab:net_stats}, we show how the level of aggregation affects some basic network metrics using the connected nodes (properties having at least one non-zero-weight incoming or outgoing edge). We calculate the average values over all graphs for each temporal aggregation for the number of nodes $\langle N \rangle$, the number of edges $ \langle E \rangle$, the first moment of the edges' weights $\langle \omega \rangle$, and the second moment of the edges' weights $\langle \omega^2 \rangle$. 
+
+ % go into some differences 
+ By definition, the yearly network contains more nodes and edges than the monthly and seasonal networks. However, the weight of the connections is greater in the monthly and seasonal networks. This aligns with an empirical understanding of how temporal networks exhibit ``bursty'' behavior with large amounts of activity occurring in a short period of time, followed by periods of inactivity \cite{sheng2023constructing}.  
+Estimates of the second moment highlight how, at all levels of aggregation, there is large heterogeneity in the weight distribution across the edges. 
+
+  
+% NETWORK STATISTICS
+
+\begin{table}[!htb]
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{8pt}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \textbf{Aggregation} & \textbf{$\langle N \rangle$} & {$\langle E \rangle$} & \textbf{$\langle \omega \rangle$} & \textbf{$\langle \omega^2 \rangle$}\\
+        \hline
+        Yearly & $2,281$ & $23,418$ & $0.01$ & $0.84$  \\ 
+        \hline
+        Seasonal  & $1,627$ & $8,124$   & $0.03$ & $0.80$   \\
+        \hline
+        Monthly  & $1,153$ & $3,413$   & $0.07$ & $0.86$    \\
+        \hline
+    \end{tabular}
+     \caption{\textbf{Network statistics.} For each level of data aggregation, we report the corresponding average number of nodes $\langle N \rangle$, average number of edges $\langle E \rangle$, average value of the edges' weights $ \langle \omega \rangle$ (measured in number of daily movements), and the second moment of the edge weight  $\langle \omega^2 \rangle$.}
+    \label{tab:net_stats}
+\end{table}
+
+\subsection{Metapopulation Model}
+
+% defining populations for each each property
+
+We are interested in developing a model for the spread of  Psa-V that is calibrated on the monthly number of infected properties between February 2011 and March 2012~\cite{greer2012costs}. To this end, we make the assumption that the $2022$ Onside data at our disposal can be used to generate movement networks representative of $2011$ and $2012$. Specifically, we define the weight of the directed connection $j \to i$ at time $t$ as
+\begin{equation}
+w_{j \to i}(t) = \left\{
+\begin{array}{ll}
+\omega^{(m = g(t))}_{j \to i} & \textrm {monthly resolution}
+\\
+\omega^{(s = f(g(t)))}_{j \to i} & \textrm {seasonal resolution}
+\\
+\omega_{j \to i} & \textrm {yearly resolution}
+\end{array}
+\right.\; .
+    \label{eq:weight_net}
+\end{equation}
+In the above expression, $g(t)$ is the function that maps the model's time $t$ to calendar months; $f(m)$ maps calendar months to seasons [already used in Eq.~(\ref{eq:weight_season})].
+
+The proposed metapopulation model combines two spreading mechanisms: within-property and between-property. It utilizes a mean-field equation that approximates the level of infection that occurs within a property, given the within- and between-property forces of infection, which are defined by a specific parameter configuration. The resulting dynamics are deterministic in nature but incorporate the uncertainty associated with the variability in initial conditions, in particular, the choice of the seed property. Each property $i$, composed of $H_i$ hectares of land, is represented as a population of susceptible and infected hectares. We denote the fraction of infected hectares on the property $i$ at time $t$ as $I_i(t)$ and the fraction of susceptible hectares for property $i$ at time $t$ as $S_i(t)$. 
+By definition, we have that
+\[
+S_i(t) + I_i(t) = 1, \forall i \in {1, \ldots, N} \textrm{ and } \forall t  \; .
+\]
+
+The level of transmission within a property is driven by $I_i(t)$ and $S_i(t)$ (within-property transmission), and the importation of infection from other connected properties (between-property transmission), and can be described as:
+% define mean-field equation
+\begin{equation}
+\begin{array}{ll}
+\frac{d \, I_i(t)}{dt} = & \beta_{\mathrm{w}} \, I_i(t) S_{i}(t) \, \Theta \left[I_i(t) - I_i^{\min} \right] 
+\\
+& +\beta_{\mathrm{b}} \, S_{i}(t) \,  \sum_{j=1}^N w_{j \to i}(t)  \, I_{j}(t) \, \Theta \left[I_j(t) - I_j^{\min} \right] 
+\end{array}
+\; ,
+\label{eq:cont}
+\end{equation}
+for $i = 1, \ldots, N$. $\Theta(x)$ is the Heavyside function defined such that $\Theta(x) = 1$ if $x > 0$ and 
+$\Theta(x) = 0$ otherwise.
+In Eq.~(\ref{eq:cont}), the force of infection within a property is denoted as $\beta_\mathrm{w}$, and the force of infection between properties is denoted as $\beta_\mathrm{b}$. 
+%These are tunable parameters that we calibrate based on the available infection data (see Model Calibration). 
+To be considered infected, property $i$ must have a level of infection above the threshold $I_{i}^{\min}$ where $I_{i}^{\min} = \left(H_i \, 625 \, \mathrm{plants \, hect}^{-1}\right)^{-1}$; $625$ is a realistic estimate of the average number of plants per hectare~\cite{NZKGI2024}.
+This threshold value is set to ensure that at least one plant on the property is infected before spreading occurs.
+
+
+% review initial conditions for the equation 
+
+We assume that the mean-field approximation~\cite{RevModPhys.87.925} in Eq.~(\ref{eq:cont}) describes the average dynamical behavior of the system. We numerically integrate it using the Newton's method (see Supplementary Materials for details). The initial condition at time $t = t_0$ is such that $I_i(t_0) = 0$ for all $i$ except for the seed property $s_0$ for which $I_{s_0}(t_0) = 0.1$. As shown in the Supplementary Materials, the results of our analysis are robust to the variation of the initial level of infection.
+
+
+% D-threshold info
+It can be difficult to detect early-stage symptoms of plant disease, in part,  due to less routine monitoring. Thus, we require that  $I_i(t) > D$ for the property $i$ to be counted as infected at time $t$. We define the cumulative number of infections at time $t$ measured in our model as:
+\begin{equation}
+    O(t) = \sum_{i=1}^N \Theta \left[ I_{i}(t) - D \right] \; .
+    \label{eq:infected}
+\end{equation}
+
+
+% describe transmission parameters in model
+We stress that the specific choice of the detection threshold $D$ does not affect how spreading unfolds, but how infections are recorded to be compared with observed epidemic curves. Once the level of infection on a property $i$, $I_i$, exceeds the threshold value for $D$, the property is included in the number of cumulative infections, as seen in Equation \ref{eq:infected}, and the transmission continues as previously described.   
+%We contrast $D$ to $I^{\min}_{i}$, which is the minimum percentage of hectares that must be infected for spreading to occur.  
+Thus, $D$ should be interpreted as an effective detection threshold, where the set parameter value combines the progress of the infection before the symptoms are detected and reported or before the surveillance detects infection, as well as biological incubation.  
+
+%The model is used to simulate an outbreak once for each combination of $\beta_w$, $\beta_b$, $D$, and each seed property $s_0$.
+By solving the mean-field equations of the model, we estimate the expected number of properties that will be infected given a specific combination of values of $\beta_w$,$\beta_b$, and a seed property $s_0$. While a value for $D$ must be used in our model, it does not influence the results of the outbreak, just how it is observed. 
+
+\subsection{Model Calibration}
+ % OUTBREAK DATA
+    \begin{figure}
+        \centering 
+        \includegraphics[width=1\linewidth]{figs/main_text/inc_comp.pdf}
+        \caption{\textbf{Dynamics of the Psa-V epidemic in New Zealand.} 
+        (A) Number of new monthly infected properties and (B) cumulative number of monthly infected properties. 
+        The solid curve in both panels
+        represents the raw data extracted from the report written by Greer and Saunders \cite{greer2012costs}. In this, the monthly infection data starts from February 2011 and ends in March 21st, 2012, but the actual outbreak started in November 2010 and has now become endemic in New Zealand. Thus, the leftmost point in the raw data
+        corresponds to the number of properties that became infected between November 2010 and February 2011.
+        The gray curve is a 2-month moving average of the raw timeseries. The moving average is calculated starting from March 2011. }
+        \label{fig:real-data}
+    \end{figure}
+
+% review where the incidence data came
+
+We use the data on the outbreak dynamics from a 2012 report~\cite{greer2012costs} relying on data by Kiwifruit Vine Health (KVH), a biosecurity organization established in December 2010\cite{birnie2014lessons} and responsible for protecting the kiwifruit industry from pests and disease. As the KVH disaggregated data is not publicly available, we extract the monthly values from the reported aggregated curve using a plot digitizing tool~\cite{PlotDigitizer}. The incidence curve shown in Fig.~\ref{fig:real-data} details the observed total monthly infections from 
+February 2011 to March 2012. Since infections had occurred before March 2011~\cite{rosanowski2013quantification} but were not available in the report, 
+we exclude February from our calibration procedure. We also use the number of infected properties per growing season~\cite{rosanowski2013quantification} to confirm the total number of infections in March 2012. 
+
+% review incidence curve 
+ 
+
+
+According to Rosanowski~\textit{et al.} \cite{rosanowski2013quantification}, the largest spikes in infection occurred in the spring during the 2011/2012 growing season and the spring of the 2012/2013 growing season. Symptom emergence is greatest in the spring for Psa-V due to the warm, humid conditions and increased rainfall \cite{froud2015review}. Although Psa-V symptoms are visually apparent once established, some orchards may have been infected earlier but only reported later due to biological latency, mild or ambiguous early symptoms, and limited awareness during the early outbreak phase. Given the potential impacts of the weather on the observed/reported infection incidence, we also estimate a 2-month moving average as an alternative reference curve for calibration (see Supplementary Materials). 
+%The moving average curve is calculated starting from February 2011 (see Supplementary Materials). 
+
+% reviewing parameter choices in detail
+
+The data used in our calibration procedure contains $14$ monthly counts of newly infected properties at the national level (not geolocalized).  We denote this timeseries as $\vec{x} = (x_1, x_2, \ldots, x_{14})$, with data points indexed in chronological order. This means that, for example, $x_1$ is the value of the incidence curve in February 2011 while $x_{14}$ refers to the incidence in March 2012. To compare the outcome of the metapopulation model with such real data, we discretize the timeseries of Eq.~(\ref{eq:infected}) by extracting a single value for each month from February 2011 to March 2012, i.e.,  $\vec{m} = (m_1, \ldots, m_{14})$. Each of these values corresponds to the cumulative number of infections measured at the end of the corresponding month. For example, $m_1$ is the cumulative number of infections measured in the model at midnight of March 1st,  2011. From the timeseries describing the cumulative number of infections, we immediately derive the incidence timeseries as $y_1 = m_1$ and $y_c = m_c - m_{c-1}$ for $c = 2, \ldots, 14$. 
+
+The outcome of the metapopulation model depends on six tunable parameters (see Table \ref{tab:model_params}). In our calibration procedure, we assume that the importation occurs on November 1st, 2010, effectively reducing the number of free parameters to five~\cite{rosanowski2013quantification,greer2012costs}. This assumption was made to accommodate the time necessary for the detection to occur, resulting in almost four months of cryptic, unreported transmission before the model outcome and raw data can be compared.
+
+For each level of temporal aggregation, we perform a grid search to find the best-fitting values for the other model parameters ($\beta_\mathrm{w}$,$\beta_\mathrm{b}$,$D$,$s_0$), which we detail in more depth in the Supplementary Materials. Potential configurations are filtered using the heuristic criterion detailed in Equation \ref{eq:filter}. We run separate calibrations for the different levels of temporal network aggregation. Also, based on the literature~\cite{rosanowski2013quantification,greer2012costs}, we use seed nodes only from the Bay of Plenty, see Figure~\ref{fig:nz-seeds}, as the outbreak originated from that region. The goal of the calibration is to ensure that the resulting dynamics fit incidence data with an acceptable level of uncertainty, a common goal of infectious disease models  \cite{merler2015spatiotemporal}.
+
+% filtering criterion 
+% PARAMETER DESCRIPTION TABLE
+\begin{table}[t]
+\centering
+\caption{\textbf{Model Parameters and their description.} 
+}
+\begin{tabular}{ll}
+\hline
+\textbf{Parameter} & \textbf{Description}  \\
+\hline
+\hline
+$R$ & Temporal resolution for the movement network \\
+$\beta_{\mathrm{w}}$ & Within-property transmission rate  \\
+$\beta_{\mathrm{b}}$ & Between-property transmission rate  \\
+$s_0$ & Initial seed property \\
+$t_0$ & Initial time of the spreading process \\
+$D$ & Detection threshold   \\
+\hline
+\end{tabular}
+\label{tab:model_params}
+\end{table}
+Given a configuration $\theta$ of the free model parameters and an aggregation $R$, we numerically integrate the Eqs.~(\ref{eq:cont}) of the metapopulation model to generate the incidence curve $\vec{y}(\theta) = (y_1(\theta), \ldots, y_{14}(\theta))$. Such a configuration is considered viable, i.e., $\theta \in V$, if  
+\begin{equation}
+ |x_c - y_c(\theta)| < \max \{ k, b x_c \}
+ \label{eq:filter}
+\end{equation}
+for all $c = 2, \ldots, 14$. This allows us to select model parameter configurations whose outcome is compatible with the ground truth within the entire observation window for the data. In the Supplementary Materials, we show the percentage of viable configurations for each combination of $k$ and $b$. We chose $k=30$ and $b=0.8$ as they were the first values with more than $0$ viable configurations for all network aggregations for the raw data.  We use this criterion to prevent overfitting to any one specific month and filter configurations that exhibit growth trends not compatible with the incidence data. The best configuration $\hat{\theta}$ is defined as the one minimizing the root mean squared error (RMSE), i.e., 
+ \begin{equation}
+    \hat{\theta} =  \arg \min_{ \theta \in V } \sqrt{\frac{\sum_{c=2}^{14} (x_c - y_c(\theta))^2}{13}}
+    \label{eq:opt}
+ \end{equation}
+ 
+Note that in both Eqs.~(\ref{eq:filter}) and~(\ref{eq:opt}), we start from the index $c=2$ thus excluding the first data point in the timeseries. This same procedure is also used to for the best fit using the 2-month moving average, Table \ref{tab:best_params}. 
+
+%The above procedure serves to estimate the best values of the parameters for the monthly, seasonal, and yearly versions of the spreading model. Those values are reported in Table~\ref{tab:best_params}. For each data type, we bold the configuration that minimizes RMSE best according to Equation \ref{eq:opt}.  
+
+\subsection{Spatiotemporal characterization of the spreading dynamics}
+
+% review distance metrics
+
+Our metapopulation model of Eq.~(\ref{eq:cont}) allows us to keep track of the level of infection $I_i(t)$ of each property $i$ at time $t$. Similarly to what was described in the previous section, we discretize such a continuous timeseries into $14$ values $\vec{m} = (m_1^{(i)}, \ldots, m_{14}^{(i)})$, each value corresponding to the months between February 2011 and March 2012. We define the time to detect infection for property $i$, namely  $c^*_i$, as the minimum value of the index $c$ for which $m_c^{(i)} > D$. We finally measure the monthly detection distance $d_i^*$ between $i$ and the closest property $j$ such that $c^*_j = c^*_i - 1$. Since multiple properties can be detected at the same time $c^*$, we compute the minimum, mean, and maximum of the quantity $d^*$ for all properties that are first detected as infected at time $c^*$. 
+
+Similarly, we estimate the distance between property $i$, first infected at time $c_i^*$, and each of the connected properties $j$ that are first infected at time $c_j^* = c_i^*-1$, further referred to as the contact distance $d_{i,j}$. As multiple $d_{i,j}$ may be observed for each value $c^*$, we compute the minimum, mean, and maximum of $d_{i,j}$ for all properties that are first detected as infected at $c^*$. 
+
+These distance metrics allow us to track whether the outbreak distance changes over time. The contact distance shows the distance between infectees and their infectors, while the outbreak distance shows the distance between incident infections, providing information on how the front of the epidemic expands month by month.
+
+
+
+
+\section{Results}
+
+\subsection{Replicating observed spreading dynamics}
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{|l|l|c|c|c|}
+\hline
+\textbf{Data} & \textbf{Aggregation} & $\boldsymbol{\beta_b}$ & $\boldsymbol{\beta_w}$ & $\boldsymbol{D}$ \\
+\hline
+\multirow{3}{*}{Raw}
+ & Monthly  & 0.03 & 0.09 & 0.4 \\
+ & \textbf{Seasonal} & 0.03 & 0.08 & 0.8 \\
+ & Yearly   & 0.04 & 0.07 & 0.8 \\
+\hline
+\multirow{3}{*}{Moving Average}
+ & \textbf{Monthly}  & 0.02 & 0.10 & 0.4 \\
+ & Seasonal & 0.03 & 0.07 & 0.8 \\
+ & Yearly   & 0.02 & 0.10 & 0.4 \\
+\hline
+\end{tabular}
+\caption{\textbf{Best-fitting parameter values.} Best-fitting parameter values for each temporal aggregation using the raw and moving average incidence data. 
+We use bold-face fonts to highlight the best-fitting aggregation level for each type of reference curve.
+}
+\label{tab:best_params}
+\end{table}
+
+
+In Table \ref{tab:best_params}, we report the values of the best estimates of our model grouped by the level of data aggregation. We display separate results depending on whether the reference timeseries is the raw incidence data or its moving average. Two aspects become apparent. First, the parameter estimates are robust across the various levels of aggregation, with the within-property contribution being about three times larger than its between-property counterpart. Second, their posterior distributions are well-peaked around their mode (see Supplementary Materials).
+
+% overview of best fit figur4e  
+ We visually compare the incidence curves from the raw data and the model estimates corresponding to the best fit in Figure \ref{fig:best-fits}A. The bands for each of the model's curves represent the uncertainty of the incidence estimates due to the choice of the seed $s_0$ when using the best-fitting parameter values for $\beta_w,\beta_b,D$ given the temporal aggregation and incidence curve. The uncertainty is calculated as the range (the difference between the maximum and minimum values) of monthly incidence across all viable seed properties for the best-fitting epidemiological parameters ($\beta_b,\beta_w, D$). The viable seeds are chosen according to Equation \ref{eq:filter}.  Within the insets of Figure \ref{fig:best-fits}, we compute the total percentage of viable configurations and the percentage of unique seeds observed given the best-fitting values for $\beta_b,\beta_w$ and $D$ for each temporal aggregation.  The viable configurations represent the \textit{total} number of configurations of $\beta_b,\beta_w, D, s_0$ that successfully pass our filtering, while the percentage of best-fitting seeds denotes the number of unique seeds when the values of $\beta_b,\beta_w, D$ are set to their best-fitting value, telling us the fraction of plausible seed properties within the network. In Figure \ref{fig:best-fits}B, the model is fit using the 2-month moving average of the incidence curve. In the Supplementary Materials, we show the individual trajectories within the uncertainty bands for each network aggregation and by data type (Fig. S11).
+
+% need for temporal network 
+
+The results shown in Figure \ref{fig:best-fits} illustrate that the model can capture the timing of epidemic dynamics well for all levels of temporal aggregation but underestimates the peak incidence magnitude in all aggregations for the raw data. When the model is calibrated to fit the 2-month moving average of the incidence curve, it fits the epidemic dynamics better compared to the raw data. This may be attributed to factors not incorporated in the model, such as weather impacts on the transmission probability and symptoms, improvements in surveillance, and changes in interventions and industry practices, not connected with human mobility. Moreover, the difficulty of fitting the raw peak incidence well arises from the extreme steepness of the outbreak peak, with a doubling time being less than the available data time step (1 month). This also highlights the need for higher temporal disaggregation of infection data for calibration using the proposed modeling approach when highly transmissible pathogens are analyzed. 
+
+% state best network type
+
+Of all levels of temporal aggregations, the seasonal configuration provides the best fit, i.e., the smallest RMSE [Eq.~(\ref{eq:opt})], for the dynamics of the observed incidence (Fig. \ref{fig:best-fits}A). It also has the largest percentage of best-fitting configurations, but the smallest percentage of viable seeds. For the 2-month moving average (Fig. \ref{fig:best-fits}B), the monthly network provides the best fit. Compared to the raw incidence, the percentage of viable seeds and best-fitting configurations is greater than for the moving average across temporal aggregations. The RMSE for the best-fitting configurations is smaller for the moving average compared to the raw data. This indicates that the model struggles less with smoother dynamics when doubling time is comparable (or preferably) shorter than the temporal observational scale. 
+
+% summarize main result of figure 
+
+The model is well calibrated in terms of outbreak timing, with the correct peak month being captured by all levels of temporal aggregations, both for the raw data and its moving average. Additionally, the best-fitting seasonal model calibrated for raw incidence captures not only the peak that occurs in November 2011 but also the second incidence increase that occurs in February 2012.
+
+% figure for best fitting curves
+\begin{figure}[h]
+    \centering
+\includegraphics[width=\linewidth]{revise_figs/best_fit_revise.pdf}
+    \caption{\textbf{Best-fitting epidemic models.} 
+    (A) We plot the incidence timeseries obtained from the epidemic model when setting its parameter values to their corresponding best fits. Different colors refer to different levels of temporal aggregation of the movements between properties: yearly (magenta), seasonal (blue), and monthly (orange). The shaded areas define the uncertainty associated with the selection of the seed properties, computed as the range of the incidence values measured over the viable seeds for the best-fitting values for $\beta_b,\beta_w, D$ . Model's curves are compared against raw data (black). 
+    %Within each panel, we have an inset which displays 
+    The inset displays
+    two different statistics: in grey, we show  the percentage of all viable configurations for each aggregation level; in teal, we show the percentage of all unique seeds that are viable when holding $\beta_b,\beta_w, D$ to their best fitting value. This analysis was conducted for the various levels of temporal aggregation that can be in the model.
+    (B) Same as in (A) but obtained when fitting the model against the 2-month moving average incidence curve (gray dashed).  }
+    \label{fig:best-fits}
+\end{figure}
+
+\subsection{Spatial Spread}
+
+% overview of distance type figures 
+
+As seen in Figure \ref{fig:dist-types}, most spreading events are initially local. Over 90\% of all newly infected properties are less than 10 km from their closest infectors (see Supplementary Materials), illustrating the dominance of local spread. However, rare long-distance events pull the average distance between newly infected properties and the closest infected property into the range of 10–100 km (Fig. \ref{fig:dist-types}). This feature is a direct result of the movement network's spatial structure, with most movements ($71.3\%$) being short-range ( $<10$km), $12.2\%$ of movements being $> 20$km and rare cases reaching $1,000$ km (the Complementary Cumulative Distribution Function, CCDF, of the movement distribution is shown in the Supplementary Materials). The importance of such movements for transmission increases as the outbreak continues, with the average distance from the closest infected property consistently increasing each month. The heterogeneity of the distance between potential infectors and newly infected nodes also increases with time due to two factors: (i) the number of close susceptible nodes decreases, and (ii) the pathogen reaches close but less connected properties (a smaller number of movements). This leads to an initially small and local outbreak spreading far beyond its origin. In the Supplementary Materials, we show how the cumulative infection distance from the initial seed grows over time, spreading more than $1,000$ km from where it is seeded. We observe that growth from the seed occurs in a staggered manner, with an increase in distance from the seed property every $2-3$ months. 
+
+
+ % FIGURE: Distance Types 
+ \begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figs/main_text/dist_types.pdf}
+    \caption{\textbf{Spatio-temporal characterization of the spreading.} 
+    Two distance metrics are compared using three different statistics: the mean, minimum, and maximum. The detection-distance metric is calculated by comparing the distances of all properties that are infected within the same month. The contact distance is calculated by finding the average distance of a newly infected property’s contacts. A contact is defined as a previously infected property that has an outgoing link to the newly infected property. We define a newly infected property as one that is detected as infected, not simply if it can transmit infection. 
+    }
+    \label{fig:dist-types}
+\end{figure}
+
+To compare the spread distance in our analysis with the potential spread distances for wind-related dispersal, we used wind-based matrices to estimate the time for a potentially wind-transported pathogen to travel from an infectious orchard (Supplementary Materials). We observed that the wind transmission of Psa-V to connections within 20 km would take under 24 hours in most cases, which is comparable to our human-mediated model. However, longer-distance wind dispersal ($>$5 days) is much less probable, as it would require much longer travel time, often exceeding 5 days. Prolonged airborne survival requires consistently favorable environmental conditions that are less likely over longer periods. These observations are consistent with the literature; wind-related pathways are more likely to contribute to local spread than to long-distance spread for Psa-V. It is important to note that the within-property transmission probability in our model, $\beta_{\mathrm{w}}$, is already incorporating this short-range environmental transmission, while between-property transmission can be extended in the future to incorporate short-distance environmental transmission upon the availability of more epidemiological data sufficient to avoid parameter identifiability issues.  
+
+\subsection{Experimental Analysis}
+
+% review what we did in sensitivity analysis
+
+\subsubsection{Detection threshold}
+% FIGURE - VARYING D THREHSOLD
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figs/main_text/vary_D.pdf}
+    \caption{ 
+    \textbf{Dependence of the model's outcome on the detection threshold.}
+    We vary the detection threshold $D$ and plot the effect this has on the incidence curve in panel (A) and on the cumulative total infections shown in panel (B). The best fitting parameter configuration is $D = 0.8$ for the seasonal network.
+    In panel (A), we plot the raw incidence curve as a reference, and in panel (B), the raw cumulative infection data are plotted. For all graphs, the seasonal network is used as well as the corresponding parameters of the best fit, Table~\ref{tab:best_params}.}
+    \label{fig:vary-d}
+\end{figure}
+
+% findings of detection threshold result 
+
+The detection threshold $D$ is the minimum fraction of property infected hectares for the property to be considered infected. The larger $D$, the more hectares must become infected, see Eq.~(\ref{eq:infected}). Figure \ref{fig:vary-d} shows the temporal dynamics of the outbreak for different $D$ values; we use the network constructed using seasonal network aggregation, and the rest of the model's parameters set to their best-fitting values (Table~\ref{tab:best_params}, and Figure \ref{fig:best-fits}A). 
+
+Decreasing $D$ effectively allows us to observe outbreak occurrence earlier. Despite the peak incidence shifting by one month, the model illustrates similar temporal dynamics for different detection thresholds. The magnitude of incidence is similar between the smallest and largest values, and the final outbreak size only differs by $2.7\%$, decreasing from $56.1\%$ of properties for $D = 0.2$ to $53.4\%$ for $D = 0.8$. These results suggest that surveillance sensitivity alone is insufficient to reduce outbreak severity — implying that timely intervention following detection may be critical to altering final outbreak size and peak incidence. 
+
+
+\subsubsection{Importation month}
+
+% review importation month figure 
+
+All the above analyses were conducted using the assumption that the importation month was November 2010. Now, we consider hypothetical scenarios for a pathogen with the same epidemiological parameters where pathogen importation may occur at the beginning of each calendar month and at any seed property. For each month, we integrate the equations using the best-fitting estimates of the epidemiological parameters for the monthly aggregation, see Table~\ref{tab:best_params}. To make the various scenarios comparable, the equations are integrated for the same $14$ months. When the hypothetical importation month is set to November, we obtain very similar initial conditions to those used in previous results, with one key caveat - no filtering of the model estimates is being performed, and all seed properties within the Bay of Plenty are considered (either viable for observed outbreak or not).
+
+To evaluate the impact of the timing of pathogen importation on human-mediated transmission, we consider four different metrics: (i) the overall number of infections (Fig.~\ref{fig:vary-c}A), (ii) the peak incidence (Fig. ~\ref{fig:vary-c}B), (iii) the time when such a peak is reached (Fig.~\ref{fig:vary-c}D), and (iv) the effective start of the epidemic, i.e. the first instant of time when at least two properties are detected as infected (Fig.~\ref{fig:vary-c}C). We show the number of total movements per month in the inset of Fig.~\ref{fig:vary-c} C and compare the cumulative incidence trends against the number of movements per month. The variation in distributions correlates with the differences in the movement network associated with the different importation months.   
+
+% Panel (A)
+Every month, there is a fraction of seeds where the final outbreak size is smaller than $250$ infections. In May-July, this fraction increases together with an overall decrease in outbreak size heterogeneity, resulting in a smaller median final outbreak size. Our results show that the biggest outbreak sizes are observed when importation occurs in March and April, i.e., the months with the maximum number of movements.
+
+% alternative description of peak incidence  - Maria
+We observe that importations in the fall and winter months lead to a higher incidence at the peak of the outbreak, with the highest variability in May through August. There exists a consistently higher probability of the outbreak either not taking off or remaining very small in winter, reflected in similar trends for the final outbreak size and peak incidence. 
+However, for the combination of epidemiological parameters and importation seeds that results in bigger outbreaks, peak incidence tends to be highest for winter importations and lowest for summer importations. 
+With the median final outbreak size being the highest for fall importations and lowest for winter importations, this suggests different spatiotemporal dynamics for different seasons. 
+
+
+% go over timing trends, Panels (C) and (D)
+
+Finally, we see that the onset ($2-4$ months) and peak ($7-8$ months) times are almost constant irrespective of the importation month.  
+We also find that it takes longer for outbreaks to peak (Fig. \ref{fig:vary-c}B) and start (Fig \ref{fig:vary-c}C) if they begin in the fall or winter seasons. These results come with the caveat that our model does not take into account temporal factors such as potential weather-dependent and season-dependent susceptibility of the plant to the infection and viability of the bacteria, which may all have an effect on the temporal outbreak trajectory.
+
+
+\begin{figure*}[!htb]
+    \centering
+    \includegraphics[width=\linewidth]{figs/main_text/vary_C.pdf}
+    \caption{
+    %\textbf{Epidemic start month affects the dynamics of the outbreak} 
+    \textbf{Dependence of the model's outcome on importation month.}
+    (A) The distribution of the final outbreak size (violin plots) for each importation month. Black boxes show the 50\% inter-quartile range. White circles show the median value. 
+    %The distribution for each month is generated from all seeds used for calibration. 
+    (B) As in (A), but for the distribution of peak incidence. (C) The mean number of months from importation until the onset (time when 2 infected farms are detected). In the inset, the total number of movements per month is shown. (D) The mean number of months from importation until the month of peak incidence. Colors of bars and violins denote seasons.} 
+    \label{fig:vary-c}
+\end{figure*}
+ 
+
+\section{Discussion}
+
+% overview of research done
+We use a metapopulation model that incorporates human mobility to simulate plant pathogen spread.  Our model reproduces the timing and the dynamics of the Psa-V outbreak that occurred in 2010-2012 in New Zealand,  demonstrating that human movement data can be effectively utilized to model the human-mediated spread of plant pathogens. This work is one of the first to use the dynamics of human mobility to simulate the human-mediated spatiotemporal spread of plant diseases. While other works have focused on how environmental factors \cite{brown2002aerial,cendoya_individual-based_2024}, vectors \cite{ellis2025, godding2023developing}, or farm proximity \cite{strona2017network} affect pathogen dispersal, we show that the human movement network can affect both the size and speed of an outbreak when human-mediated transmission is epidemiologically relevant. Upon successful validation during future outbreaks, the proposed framework opens the door for utilizing human mobility networks for forecasting, scenario modeling, and decision-making support for plant pathogens with human-mediated routes of transmission. 
+
+A key novelty of this work lies in providing a modeling framework to simulate both the short- and long-distance patterns of human-mediated dispersal of bacterial pathogens. Much of the existing literature \cite{pan2010prediction,radici2022early,sutrave2012identifying} on the long-distance dispersal of plant diseases focuses on fungal pathogens, whose national or intercontinental spread is primarily driven by environmental factors like wind. For bacterial diseases, however, environmental factors such as wind-driven rain \cite{froud2015review} and vectors \cite{ellis2025} are generally considered major contributors to short-range dispersal, usually within 10 km for Psa-V \cite{rosanowski2013quantification}, while human-mediated spread drives long-range dispersal \cite{froud2015review, donati2020pseudomonas}. Our results suggest that when environmental between-property transmission is not explicitly simulated and in the absence of additional vectors such as insects or wind, human-mediated spread results in major local transmission, for Psa-V within 10 km. Furthermore, the human mobility connecting distant properties and regions allows us to simulate a rapidly expanding nationwide outbreak, driven by rare long-distance movements that cause sudden jumps in distance spread. Consequently, this study represents a crucial first step toward understanding how human mobility can affect the transmission dynamics of bacterial plant pathogens across multiple spatial scales when human-mediated dispersal is a viable transmission mechanism. However, the relative contribution of human-mediated versus environmental transmission will vary considerably across pathosystems \cite{chaves2025, szyniszewska2021smallholder}, potentially leading to different outcomes for other pathogens.
+
+% discuss experimental analysis results 
+Our calibrated model also allows us to test the sensitivity of human-mediated transmission to initial conditions. We find that the median size of an outbreak increases if the pathogen is imported during months with higher movement frequency. Holding the time of importation constant, the specific geographic location where the disease is seeded contributes to the large variability in epidemic severity. Some seed properties generate only small and local outbreaks, and others cause system-wide epidemic events.  
+
+% detail importance of modeling temporality, impact on surveillance
+
+Worker movements are intrinsically tied to the growing season, meaning the density of movements per property changes based on seasonal agricultural demands. This highlights the importance of modeling how the movement network changes in time, since its temporal dynamics strongly affect the connectivity between properties and potential risks of human-mediated dispersal of pathogens. To explore the impact of temporal resolution, the proposed metapopulation model relies on underlying mobility networks aggregated over time windows of variable length (i.e., monthly, seasonal, and yearly). While all of our network aggregations approximate the infection dynamics well, the seasonal network fits the raw data dynamics best due to seasonal resolution capturing most of the changes in movement complexity. Understanding this seasonality and its drivers can be helpful to improve outbreak management and surveillance strategies. More generally, this modeling framework provides a foundation that, once recalibrated for a specific pathogen and region with appropriate epidemiological and movement network data, could potentially support short-term outbreak forecasting and scenario modeling - though prospective validation would be needed to confirm forecasting skill.
+
+% talk about limitations
+
+While our modeling approach can provide insights into the impact of human movements on the spread of plant diseases, our work has several limitations. First, our model has not been extended to account for the impact of environmental factors. For Psa-V, these environmental factors, specifically humidity, rainfall, wind-driven rain, and temperature, have been found to contribute to local dispersal, pathogen survival, and probability of observing symptoms for Psa-V \cite{froud2015review, deng2023survival}. Although Psa-V can overwinter\cite{deng2023survival} and survive for long periods of time in plants and soil, it is unknown how well it survives when transported through wind-related pathways. For Psa-V, unlike for fungal pathogens \cite{radici2022early,leyronas2018assessing}, the environmental factors are understood to contribute more to local spread and less to long-distance dispersal. These observations and our comparisons between wind-based matrices and our mobility network support our decision to focus on human mobility networks as the primary driver of long-range spread. Moreover, due to parameter identifiability issues, these two modes of transmission - environmental and human-mediated - cannot be incorporated simultaneously without additional data. Accurate calibration of their relative contributions would require additional spatiotemporal epidemiological data to distinguish the environmental force of infection from the human-mediated route. By deliberately isolating the human-mobility component, our calibrated model avoids these identifiability constraints to provide a targeted assessment of long-range spread, even if it provides conservative estimates for short-range transmission between adjacent properties associated with potential environment-driven transmission.    
+
+Second, the observed epidemiological curves used to calibrate the model were affected by active interventions aimed at mitigating Psa-V spread \cite{greer2012costs,birnie2014lessons}. The kiwifruit industry responded to the outbreak by establishing a surveillance and response system, implementing screening and washing of potential vectors (e.g., plant materials, vehicles), and providing guidance on best practices to the orchardists. In the most affected area of New Zealand (Te Puke in Bay of Plenty) up to 8\% of the kiwifruit were cut out before the harvest in 2012 ~\cite{greer2012costs} (end of our calibrating window) and 51.8\% of the production area was sprayed in 2011. However, due to the unavailability of precise data on the deployed interventions across time and space, interventions were not explicitly modeled in this study. 
+
+Third, in this model, we used the Onside horticulture movement network to simulate the spread of a pathogen that primarily affects the kiwifruit industry. Two aspects of this choice warrant discussion. First, while Psa-V poses a severe threat to kiwifruit orchards, human-mediated transmission continues even if vectors (such as planting and pollinating materials, footwear, clothing, or vehicles) pass through a non-kiwifruit property. Utilizing only the network of kiwifruit properties would underestimate true connectivity and, consequently, the potential outbreak size and dynamics. Therefore, the broader horticulture movement network was used to better capture transmission-relevant mobility. Second, while this mobility network does not provide absolute coverage of the horticulture industry - potentially affecting overall network size and connectivity - it represents a majority of the industry's properties in New Zealand. For example, the dataset covers 70\% of the kiwifruit production area and spans all geographic regions where orchards exist. As industry adoption of this technology continues to grow, this data will provide an even more robust foundation for the proposed modeling framework in the future.
+
+ While our model captures well the timing of the peak and the peak incidence for the moving average data, it underestimates the point-estimate magnitude of the raw peak incidence. This difference in model behavior occurs due to the large spike in November 2011 and may be explained by a set of factors. First, the reporting of the infected orchards may have increased over time as the surveillance system was established during the outbreak. Second, our model does not consider the fluctuations in the environmental factors, such as rainfall and temperature, that may have caused a sudden increase in the symptoms and/or transmissibility in spring. Third, as interventions were not explicitly considered in the model, our analysis does not consider their potential temporal variation, which may have contributed to a sharp increase/decrease in the number of reported infected orchards. However, the modeling approach is flexible enough to allow for the incorporation of these aspects in future work, provided suitable epidemiological data is available. As the model can better fit the moving average data as the temporal resolution of the network data improves, this may also indicate that more granular temporal data is needed to better capture changes in transmission dynamics. We also suggest that any use of this framework for biosecurity decision-making should incorporate uncertainty estimates for peak estimates to avoid underestimating response needs.
+
+While this study effectively illustrates the calibration pipeline using a straightforward filtering and RMSE  approach, the framework is designed to be adaptable, allowing future research to incorporate traditional inference methods like Markov-chain Monte-Carlo methods \cite{chowell2017fitting} or particle filtering\cite{yang2014comparison}. This work could also be extended to incorporate:  i) environmental layer for between-property localized dispersal; ii) environment-sensitive incubation period by introducing an exposed compartment; iii) interventions, such as quarantine, spraying, and trade/movement reduction by introducing removed compartments. This, however, would require detailed surveillance data on the presence of the pathogen and interventions at the appropriate spatial and temporal resolution. 
+
+The modeling framework developed here, combined with the Onside movement network, could be recalibrated using surveillance data for a novel bacterial plant disease spreading in New Zealand, providing a data-driven tool suitable for testing potential outbreak scenarios upon successful validation. This modeling approach also offers several promising avenues for future research, including identifying effective organization of sentinel nodes for surveillance systems \cite{bajardi2012optimizing,colman2019efficient} to ensure the timely detection of outbreaks and evaluation of various containment strategies to mitigate disease spread once an outbreak is identified. 
+
+
+\section{Data Availability}
+All the code and data needed to reproduce this study are available on GitHub at \url{https://github.com/vakrao/net_plant_spread}. To prevent unauthorized public disclosure and protect the identifiability of individual properties and their owners, granular location data (latitude and longitude of each property) will not be released publicly due to legal and privacy restrictions. This proprietary data is subject to the Onside Privacy Policy, Terms of Use, and the New Zealand Privacy Act 2020. Researchers interested in accessing the raw, granular data for reproduction purposes may contact Onside at \url{info@getonside.com}.    
+
+\section{Acknowledgments}
+This project was supported by the Onside company via a collaborative grant. We would like to thank Reza Shoorangiz and Zach Hitchcock from Onside for their help. The company had no role in study design, data analysis, the decision to publish, or any opinions, findings, and conclusions or recommendations expressed in the manuscript. F.R. acknowledges partial support by the Air Force Office of Scientific Research under award number FA9550-24-1-0039.
+\bibliography{refs}
+
+\end{document}
