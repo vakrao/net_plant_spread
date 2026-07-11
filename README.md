@@ -33,22 +33,21 @@ All relevant packages are listed in the ``pyproject.toml`` file.
 ### Folder Structure ### 
 ----------------
 **configs/** &rarr;  contains all experimental configuration files 
-  |
-
-  --**manuscript_configs/** &rarr; contains configs used to generate manuscript figures
+  - **configs/manuscript_configs/** &rarr; contains configs used to generate manuscript figures
 
 **data/** &rarr;   contains mobility network datasets generated from OnSide movement data. Folder also contains incidence datasets. 
-  |
 
-  --**clean_month_agg/** &rarr; contains monthly aggregated data
+  - **data/clean_month_agg/** &rarr; contains monthly aggregated data
 
-  --**clean_season_agg/** &rarr; contains seasonal aggregated data
+  - **data/clean_season_agg/** &rarr; contains seasonal aggregated data
 
-  --**incidence_data/** &rarr; contains incidence data 
+  - **data/incidence_data/** &rarr; contains incidence data 
 
 **results/** &rarr;  contains `.csv` files generated from `E_runner.py` script. This folder only contains the monthly results of the best-fitting configurations for the raw data and moving average infection data. 
 
 **src/** &rarr; contains the code used for the metapopulation model and dynamics. Also includes helper functions used in the visualizations 
+  - **src/data-gen/** &rarr; contains scripts for generating aggregated network files
+  - **src/notebook/** &rarr; contains jupyter notebooks used for visualizations
 
 ### Usage ###
 --------------
@@ -71,7 +70,7 @@ The different variables present in the .yaml files in the configs directory are 
 **.yaml File parameters** 
 - `b_w`: list of floats
 - `b_b`: list of floats
-- `alpha`: list of loats
+- `alpha`: list of floats (set to 0.1 in all simulations)
 - `deltaT`: either 1,3, or 12 (monthly, seasonal, or yearly)
 - `L`: list of floats. Number of months the model is allowed to run without reporting infections. Set to 3 to replicate paper results. 
 - `T`: integer
