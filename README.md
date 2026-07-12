@@ -43,11 +43,13 @@ All relevant packages are listed in the ``pyproject.toml`` file.
 
   - **data/incidence_data/** &rarr; contains incidence data 
 
+
 **results/** &rarr;  contains `.csv` files generated from `E_runner.py` script. This folder only contains the monthly results of the best-fitting configurations for the raw data and moving average infection data. 
 
 **src/** &rarr; contains the code used for the metapopulation model and dynamics. Also includes helper functions used in the visualizations 
   - **src/data-gen/** &rarr; contains scripts for generating aggregated network files
   - **src/notebook/** &rarr; contains jupyter notebooks used for visualizations
+  - **src/wind/** &rarr; contains R scripts used for wind analysis in SM
 
 ### Usage ###
 --------------

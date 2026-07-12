@@ -24,7 +24,9 @@ The `src/` folder contains all the code needed to run the model.
 **Sub-Folders**
 -----------
 
-- **data-gen/** &rarr;contains the code used to generate the files used in the `clean_season_agg/` and `clean_month_agg/` folders
+- **data-gen/** &rarr; contains the code used to generate the files used in the `clean_season_agg/` and `clean_month_agg/` folders
 
 - **notebook/** &rarr; contains example jupyter notebooks used to visualize lines of best fit
+
+- **wind/** &rarr; contains all the wind analysis code 
 
