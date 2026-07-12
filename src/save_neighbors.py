@@ -50,6 +50,8 @@ def read_network_data (filename):
             first_row = 1
     return in_bond, out_bond
 
+# need lat/long data, 
+# please email authors if needed
 prop_fp  = "../data/pub_clean_prop_dat.csv"
 prop_df = pd.read_csv("../data/pub_clean_prop_dat.csv")
 hort_data = "../data/yearly_clean_agg.csv"
